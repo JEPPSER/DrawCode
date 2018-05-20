@@ -1,6 +1,10 @@
 import 'dart:html';
 
 main(){
-  InputElement ie = querySelector('#thisOne');
-  ie.value = "5555";
+  TextAreaElement txtArea = querySelector('#txtArea');
+  ButtonInputElement saveBtn = querySelector('#saveBtn');
+  saveBtn.onClick.listen((_) {
+    String str = txtArea.value;
+    print(str);
+  });
 }
