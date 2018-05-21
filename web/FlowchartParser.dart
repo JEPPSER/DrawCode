@@ -11,9 +11,33 @@ class FlowchartParser {
         square(list, lines[i], i);
       } else if(lines[i].contains("=") && lines[i].split("=").length == 2){
         assignment(list, lines[i], i);
+      } else if(lines[i].contains("->") && lines[i].split("->").length == 2){
+        arrow(list, lines[i], i);
       }
     }
     return list;
+  }
+
+  void arrow(List<DiagramObject> list, String line, int lineNumber){
+    List<String> parts = line.replaceAll(" ", "").split("->");
+    int a = -1;
+    int b = -1;
+    for(int i = 0; i < list.length; i++){
+      if(list[i].name == parts[0]){
+        a = i;
+      } else if(list[i].name == parts[1]){
+        b = i;
+      }
+    }
+
+    if(a != -1 && b != -1){
+      if(list[a] is Square){
+        Square s = list[a];
+        s.connections.add(list[b]);
+      }
+    } else {
+      print("ERROR: invalid variable names\nline: $lineNumber");
+    }
   }
 
   void assignment(List<DiagramObject> list, String line, int lineNumber){
@@ -29,7 +53,7 @@ class FlowchartParser {
         }
       }
     } else {
-      print("ERROR line: $lineNumber");
+      print("ERROR: invalid variable\nline: $lineNumber");
     }
   }
 
@@ -40,19 +64,19 @@ class FlowchartParser {
         Square s = list[index];
         s.text = parts[1].replaceAll("\"", "");
       } else {
-        print("ERROR line: $lineNumber");
+        print("ERROR: string must be between two \" symbols\nline: $lineNumber");
       }
     }
   }
 
   void square(List<DiagramObject> list, String line, int lineNumber){
     List<String> parts = line.split(" ");
-    if(parts.length == 2 && !parts.contains(".")){
+    if(parts.length == 2 && !line.contains(".")){
       Square s = new Square();
       s.name = parts[1];
       list.add(s);
     } else {
-      print("ERROR line: $lineNumber");
+      print("ERROR: invalid variable name\nline: $lineNumber");
     }
   }
 }
