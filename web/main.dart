@@ -2,6 +2,7 @@ import 'dart:html';
 import 'FlowchartParser.dart';
 import 'DiagramObject.dart';
 import 'Square.dart';
+import 'If.dart';
 
 main(){
   TextAreaElement txtArea = querySelector('#txtArea');
@@ -15,10 +16,7 @@ main(){
       FlowchartParser parser = new FlowchartParser();
       objects = parser.parse(str);
       for(int i = 0; i < objects.length; i++){
-        if(objects[i] is Square){
-          Square s = objects[i];
-          print(s.name);
-        }
+
       }
     }
   });
