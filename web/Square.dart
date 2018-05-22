@@ -9,5 +9,7 @@ class Square extends DiagramObject{
 
   Square(){
     connections = new List<DiagramObject>();
+    width = 100;
+    height = 50;
   }
 }
