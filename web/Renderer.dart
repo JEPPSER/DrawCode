@@ -1,12 +1,11 @@
 import 'DiagramObject.dart';
 import 'Square.dart';
+import 'If.dart';
 import 'dart:html';
 import 'dart:math';
 
 class Renderer {
 
-  int squareWidth;
-  int squareHeight;
   List<DiagramObject> doneObjects = new List<DiagramObject>();
 
   void render(CanvasRenderingContext2D g, List<DiagramObject> objects){
@@ -16,19 +15,15 @@ class Renderer {
       scale = 0.5;
     }
 
-    squareWidth = (100 * scale).floor();
-    squareHeight = (50 * scale).floor();
-
     g.font = (8 * scale).toString() + "px Arial";
 
+    // Set x and y for all objects.
     if(objects.length > 0){
       DiagramObject s = objects[0];
       doneObjects.add(s);
-      s.width = squareWidth;
-      s.height = squareHeight;
       s.x = (s.width / 2).floor();
       s.y = (755 / 2).floor();
-      placeConnections(s, objects);      
+      placeConnections(s, objects, scale);      
     }
 
     // Draw lines (arrows)
@@ -41,23 +36,22 @@ class Renderer {
           int fromY = (s.y + s.height / 2).floor();
           int toX = (s.connections[j].x + s.connections[j].width / 2).floor();
           int toY = (s.connections[j].y + s.connections[j].height / 2).floor();
-
-          if(fromY < toY){
-            fromY = s.y + s.height;
-            toY = s.connections[j].y;
-          } 
-          if(toY < fromY){
-            fromY = s.y;
-            toY = s.connections[j].y + s.connections[j].height;
-          } 
-          if(fromX < toX){
-            fromX = s.x + s.width;
-            toX = s.connections[j].x;
-          } 
-          if(fromX > toX){
-            fromX = s.x;
-            toX = s.connections[j].x + s.connections[j].width;
-          }
+          drawArrow(g, fromX, fromY, toX, toY);
+        }
+      } else if(objects[i] is If){
+        If f = objects[i];
+        List<DiagramObject> yesno = new List<DiagramObject>();
+        if(f.yes != null){
+          yesno.add(f.yes);
+        }
+        if(f.no != null){
+          yesno.add(f.no);
+        }
+        for(int j = 0; j < yesno.length; j++){
+          int fromX = (f.x + f.width / 2).floor();
+          int fromY = (f.y + f.height / 2).floor();
+          int toX = (yesno[j].x + yesno[j].width / 2).floor();
+          int toY = (yesno[j].y + yesno[j].height / 2).floor();
           drawArrow(g, fromX, fromY, toX, toY);
         }
       }
@@ -65,28 +59,36 @@ class Renderer {
     g.closePath();
     g.stroke();
 
+    // Draw objects
     for(int i = 0; i < objects.length; i++){
       if(objects[i] is Square){
         Square s = objects[i];
         g.strokeRect(s.x, s.y, s.width, s.height);
         g.fillText(s.text, s.x + s.width / 2, s.y + s.height / 2);
+      } else if(objects[i] is If){
+        If f = objects[i];
+        g.beginPath();
+        g.arc(f.x + f.width / 2, f.y + f.width / 2, f.width / 2, 0, 2*PI);
+        g.closePath();
+        g.stroke();
+        g.fillText(f.text, f.x + f.width / 2, f.y + f.height / 2);
       }
     }
   }
 
-  void placeConnections(DiagramObject o, List<DiagramObject> objects){
+  void placeConnections(DiagramObject o, List<DiagramObject> objects, double scale){
     if(o is Square){
       Square s = o;
-      s.width = squareWidth;
-      s.height = squareHeight;
+      s.width = (s.width*scale).floor();
+      s.height = (s.height*scale).floor();
       for(int i = 0; i < s.connections.length; i++){
         if(!doneObjects.contains(s.connections[i])){
-          int x;
-          int y;
+          int x = 0;
+          int y = 0;
 
           // Set x and y.
           if(i == 0){
-           x = (s.x + s.width * 1.5).floor();
+           x = (s.x + s.width * 1.7).floor();
            y = s.y;
           } else if(i == 1){
             x = s.x;
@@ -101,16 +103,48 @@ class Renderer {
           }
 
           // Check if point is valid.
-          if(!isFree(x, y, objects) && (x > 800 || x < 0 || y > 600 || y < 0)){
+          if(!isFree(x, y, s.connections[i].width, s.connections[i].height, objects)){
             Random rand = new Random();
             x = rand.nextInt(800);
             y = rand.nextInt(600);
           }
 
-          doneObjects.add(s.connections[i]);
           s.connections[i].x = x;
           s.connections[i].y = y;
-          placeConnections(s.connections[i], objects);
+          doneObjects.add(s.connections[i]);
+          placeConnections(s.connections[i], objects, scale);
+        }
+      }
+    } else if(o is If){
+      If f = o;
+      f.width = (f.width*scale).floor();
+      f.height = (f.height*scale).floor();
+      List<DiagramObject> yesno = new List<DiagramObject>();
+      if(f.yes != null){
+        yesno.add(f.yes);
+      }
+      if(f.no != null){
+        yesno.add(f.no);
+      }  
+      for(int i = 0; i < yesno.length; i++){
+        if(!doneObjects.contains(yesno[i])){
+          if(isFree(f.x + f.width * 2, f.y, f.width, f.height, objects)){
+            yesno[i].x = f.x + (f.width * 2.5).floor();
+            yesno[i].y = f.y;
+          } else if(isFree(f.x, f.y + f.height * 2, f.width, f.height, objects)){
+            yesno[i].x = f.x + (f.width / 2).floor() - (yesno[i].width * scale / 2).floor();
+            yesno[i].y = f.y + f.height * 2;
+          } else if(isFree(f.x, f.y - f.height * 2, f.width, f.height, objects)){
+            yesno[i].x = f.x + (f.width / 2).floor() - (yesno[i].width * scale / 2).floor();
+            yesno[i].y = f.y - f.height * 2;
+          } else {
+            Random rand = new Random();
+            yesno[i].x = rand.nextInt(800);
+            yesno[i].y = rand.nextInt(600);
+          }
+
+          doneObjects.add(yesno[i]);
+          placeConnections(yesno[i], objects, scale);
         }
       }
     }
@@ -126,10 +160,14 @@ class Renderer {
     g.lineTo(toX-headlen*cos(angle+PI/6), toY-headlen*sin(angle+PI/6));
   }
 
-  bool isFree(int x, int y, List<DiagramObject> objects){
+  bool isFree(int x, int y, int width, int height, List<DiagramObject> objects){
     for(int j = 0; j < objects.length; j++){
-      if(objects[j].x == x && objects[j].y == y){
-        return false;
+      if(objects[j].x != null && objects[j].y != null){
+        Rectangle r = new Rectangle(objects[j].x, objects[j].y, objects[j].width, objects[j].height);
+        Rectangle s = new Rectangle(x, y, width, height);
+        if(r.intersects(s) || (x > 800 || x < 0 || y > 600 || y < 0)){
+          return false;
+        }
       }
     }
     return true;

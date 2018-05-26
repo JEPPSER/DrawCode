@@ -67,7 +67,7 @@ class FlowchartParser {
   }
 
   void arrow(List<DiagramObject> list, String line, int lineNumber){
-    List<String> parts = line.replaceAll(" ", "").split("->");
+    List<String> parts = line.split("->");
     int a = -1;
     int b = -1;
     for(int i = 0; i < list.length; i++){
@@ -81,6 +81,8 @@ class FlowchartParser {
       if(list[a] is Square){
         Square s = list[a];
         s.connections.add(list[b]);
+      } else {
+        print("ERROR: invalid variable names\nline: $lineNumber");
       }
     } else {
       print("ERROR: invalid variable names\nline: $lineNumber");
@@ -88,7 +90,7 @@ class FlowchartParser {
   }
 
   void assignment(List<DiagramObject> list, String line, int lineNumber){
-    List<String> parts = line.replaceAll(" ", "").split("=");
+    List<String> parts = line.split("=");
     if(parts[0].contains(".")){
       List<String> leftParts = parts[0].split(".");
       for(int i = 0; i < list.length; i++){
