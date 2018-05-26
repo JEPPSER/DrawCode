@@ -32,11 +32,8 @@ class Renderer {
       if(objects[i] is Square){
         Square s = objects[i];
         for(int j = 0; j < s.connections.length; j++){
-          int fromX = (s.x + s.width / 2).floor();
-          int fromY = (s.y + s.height / 2).floor();
-          int toX = (s.connections[j].x + s.connections[j].width / 2).floor();
-          int toY = (s.connections[j].y + s.connections[j].height / 2).floor();
-          drawArrow(g, fromX, fromY, toX, toY);
+          List<Point> points = getPoints(s, s.connections[j]);
+          drawArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
         }
       } else if(objects[i] is If){
         If f = objects[i];
@@ -48,11 +45,8 @@ class Renderer {
           yesno.add(f.no);
         }
         for(int j = 0; j < yesno.length; j++){
-          int fromX = (f.x + f.width / 2).floor();
-          int fromY = (f.y + f.height / 2).floor();
-          int toX = (yesno[j].x + yesno[j].width / 2).floor();
-          int toY = (yesno[j].y + yesno[j].height / 2).floor();
-          drawArrow(g, fromX, fromY, toX, toY);
+          List<Point> points = getPoints(f, yesno[j]);
+          drawArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
         }
       }
     }
@@ -74,6 +68,49 @@ class Renderer {
         g.fillText(f.text, f.x + f.width / 2, f.y + f.height / 2);
       }
     }
+  }
+
+  List<Point> getPoints(DiagramObject from, DiagramObject to){
+    List<Point> result = new List<Point>();
+    int fromX = (from.x + from.width / 2).floor();
+    int fromY = (from.y + from.height / 2).floor();
+    int toX = (to.x + to.width / 2).floor();
+    int toY = (to.y + to.height / 2).floor();
+    double angle = atan2(toY - fromY, toX - fromX);
+    print(angle);
+    if(angle < 0){
+      angle += 2*PI;
+    }
+    angle = 2*PI - angle;
+    if(angle <= PI/8 || angle >= 15*PI/8){
+      fromX = from.x + from.width;
+      toX = to.x;
+    } else if(angle <= 3*PI/8 && angle >= PI/8){
+      fromY = from.y;
+      toX = to.x;
+    } else if(angle <= 5*PI/8 && angle >= 3*PI/8){
+      fromY = from.y;
+      toY = to.y + to.height;
+    } else if(angle <= 7*PI/8 && angle >= 5*PI/8){
+      fromY = from.y;
+      toX = to.x + from.width;
+    } else if(angle <= 9*PI/8 && angle >= 7*PI/8){
+      fromX = from.x;
+      toX = to.x + from.width;
+    } else if(angle <= 11*PI/8 && angle >= 9*PI/8){
+      fromY = from.y + from.height;
+      toX = to.x + to.width;
+    } else if(angle <= 13*PI/8 && angle >= 11*PI/8){
+      fromY = from.y + from.height;
+      toY = to.y;
+    } else if(angle <= 15*PI/8 && angle >= 13*PI/8){
+      fromY = from.y + from.height;
+      toX = to.x;
+    }
+
+    result.add(new Point(fromX, fromY));
+    result.add(new Point(toX, toY));
+    return result;
   }
 
   void placeConnections(DiagramObject o, List<DiagramObject> objects, double scale){
