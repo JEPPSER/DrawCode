@@ -62,7 +62,7 @@ class Renderer {
       } else if(objects[i] is If){
         If f = objects[i];
         g.beginPath();
-        g.arc(f.x + f.width / 2, f.y + f.width / 2, f.width / 2, 0, 2*PI);
+        drawDiamond(g, f);
         g.closePath();
         g.stroke();
         g.fillText(f.text, f.x + f.width / 2, f.y + f.height / 2);
@@ -77,7 +77,6 @@ class Renderer {
     int toX = (to.x + to.width / 2).floor();
     int toY = (to.y + to.height / 2).floor();
     double angle = atan2(toY - fromY, toX - fromX);
-    print(angle);
     if(angle < 0){
       angle += 2*PI;
     }
@@ -125,7 +124,7 @@ class Renderer {
 
           // Set x and y.
           if(i == 0){
-           x = (s.x + s.width * 1.7).floor();
+           x = (s.x + s.width * 2).floor();
            y = s.y;
           } else if(i == 1){
             x = s.x;
@@ -195,6 +194,14 @@ class Renderer {
     g.lineTo(toX-headlen*cos(angle-PI/6), toY-headlen*sin(angle-PI/6));
     g.moveTo(toX, toY);
     g.lineTo(toX-headlen*cos(angle+PI/6), toY-headlen*sin(angle+PI/6));
+  }
+
+  void drawDiamond(CanvasRenderingContext2D g, If f){
+    g.moveTo(f.x, f.y + f.height / 2);
+    g.lineTo(f.x + f.width / 2, f.y);
+    g.lineTo(f.x + f.width, f.y + f.height / 2);
+    g.lineTo(f.x + f.width / 2, f.y + f.height);
+    g.lineTo(f.x, f.y + f.height / 2);
   }
 
   bool isFree(int x, int y, int width, int height, List<DiagramObject> objects){

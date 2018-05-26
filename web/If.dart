@@ -6,7 +6,7 @@ class If extends DiagramObject {
   DiagramObject no;
 
   If(){
-    width = 50;
-    height = 50;
+    width = 60;
+    height = 60;
   }
 }
