@@ -30,15 +30,35 @@ class Renderer {
       s.y = (755 / 2).floor();
       placeConnections(s, objects);      
     }
-    
+
+    // Draw lines (arrows)
     g.beginPath();
     for(int i = 0; i < objects.length; i++){
       if(objects[i] is Square){
         Square s = objects[i];
         for(int j = 0; j < s.connections.length; j++){
-          
-          g.moveTo(s.x + s.width / 2, s.y + s.height / 2);
-          g.lineTo(s.connections[j].x + s.connections[j].width / 2, s.connections[j].y + s.connections[j].height / 2);
+          int fromX = (s.x + s.width / 2).floor();
+          int fromY = (s.y + s.height / 2).floor();
+          int toX = (s.connections[j].x + s.connections[j].width / 2).floor();
+          int toY = (s.connections[j].y + s.connections[j].height / 2).floor();
+
+          if(fromY < toY){
+            fromY = s.y + s.height;
+            toY = s.connections[j].y;
+          } 
+          if(toY < fromY){
+            fromY = s.y;
+            toY = s.connections[j].y + s.connections[j].height;
+          } 
+          if(fromX < toX){
+            fromX = s.x + s.width;
+            toX = s.connections[j].x;
+          } 
+          if(fromX > toX){
+            fromX = s.x;
+            toX = s.connections[j].x + s.connections[j].width;
+          }
+          drawArrow(g, fromX, fromY, toX, toY);
         }
       }
     }
@@ -73,7 +93,7 @@ class Renderer {
             y = (s.y + s.height * 2).floor();
           } else if(i == 2){
             x = s.x;
-            y = (s.y - s.width * 1.5).floor();
+            y = (s.y - s.height * 2).floor();
           } else{
             Random rand = new Random();
             x = rand.nextInt(800);
@@ -94,6 +114,16 @@ class Renderer {
         }
       }
     }
+  }
+
+  void drawArrow(CanvasRenderingContext2D g, int fromX, int fromY, int toX, int toY){
+    int headlen = 10;
+    double angle = atan2(toY  - fromY, toX - fromX);
+    g.moveTo(fromX, fromY);
+    g.lineTo(toX, toY);
+    g.lineTo(toX-headlen*cos(angle-PI/6), toY-headlen*sin(angle-PI/6));
+    g.moveTo(toX, toY);
+    g.lineTo(toX-headlen*cos(angle+PI/6), toY-headlen*sin(angle+PI/6));
   }
 
   bool isFree(int x, int y, List<DiagramObject> objects){
