@@ -47,6 +47,11 @@ class Renderer {
         for(int j = 0; j < yesno.length; j++){
           List<Point> points = getPoints(f, yesno[j]);
           drawArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
+          if(j == 0){
+            g.fillText("yes", points[2].x, points[2].y);
+          } else if(j == 1){
+            g.fillText("no", points[2].x, points[2].y);
+          }
         }
       }
     }
@@ -58,14 +63,16 @@ class Renderer {
       if(objects[i] is Square){
         Square s = objects[i];
         g.strokeRect(s.x, s.y, s.width, s.height);
-        g.fillText(s.text, s.x + s.width / 2, s.y + s.height / 2);
+        int x = s.x + (s.width / 2).floor() - (s.text.length*scale*1.8).floor();
+        g.fillText(s.text, x, s.y + s.height / 2);
       } else if(objects[i] is If){
         If f = objects[i];
         g.beginPath();
         drawDiamond(g, f);
         g.closePath();
         g.stroke();
-        g.fillText(f.text, f.x + f.width / 2, f.y + f.height / 2);
+        int x = f.x + (f.width / 2).floor() - (f.text.length*scale*1.8).floor();
+        g.fillText(f.text, x, f.y + f.height / 2);
       }
     }
   }
@@ -76,6 +83,10 @@ class Renderer {
     int fromY = (from.y + from.height / 2).floor();
     int toX = (to.x + to.width / 2).floor();
     int toY = (to.y + to.height / 2).floor();
+
+    int textX = 0;
+    int textY = 0;
+
     double angle = atan2(toY - fromY, toX - fromX);
     if(angle < 0){
       angle += 2*PI;
@@ -84,31 +95,48 @@ class Renderer {
     if(angle <= PI/8 || angle >= 15*PI/8){
       fromX = from.x + from.width;
       toX = to.x;
+      textX = fromX + 5;
+      textY = fromY - 5;
     } else if(angle <= 3*PI/8 && angle >= PI/8){
       fromY = from.y;
       toX = to.x;
+      textX = fromX + 10;
+      textY = fromY - 20;
     } else if(angle <= 5*PI/8 && angle >= 3*PI/8){
       fromY = from.y;
       toY = to.y + to.height;
+      textX = fromX + 5;
+      textY = fromY - 20;
     } else if(angle <= 7*PI/8 && angle >= 5*PI/8){
       fromY = from.y;
       toX = to.x + from.width;
+      textX = fromX - 10;
+      textY = fromY - 20;
     } else if(angle <= 9*PI/8 && angle >= 7*PI/8){
       fromX = from.x;
       toX = to.x + from.width;
+      textX = fromX - 20;
+      textY = fromY - 10;
     } else if(angle <= 11*PI/8 && angle >= 9*PI/8){
       fromY = from.y + from.height;
       toX = to.x + to.width;
+      textX = fromX - 20;
+      textY = fromY + 10;
     } else if(angle <= 13*PI/8 && angle >= 11*PI/8){
       fromY = from.y + from.height;
       toY = to.y;
+      textX = fromX + 5;
+      textY = fromY + 20;
     } else if(angle <= 15*PI/8 && angle >= 13*PI/8){
       fromY = from.y + from.height;
       toX = to.x;
+      textX = fromX + 10;
+      textY = fromY + 20;
     }
 
     result.add(new Point(fromX, fromY));
     result.add(new Point(toX, toY));
+    result.add(new Point(textX, textY));
     return result;
   }
 
