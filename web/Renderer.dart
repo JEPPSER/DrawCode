@@ -92,46 +92,112 @@ class Renderer {
       angle += 2*PI;
     }
     angle = 2*PI - angle;
+
+    // Shit code maybe fix later.....
     if(angle <= PI/8 || angle >= 15*PI/8){
       fromX = from.x + from.width;
       toX = to.x;
       textX = fromX + 5;
       textY = fromY - 5;
+      from.hasLeft = false;
+      to.hasRight = false;
     } else if(angle <= 3*PI/8 && angle >= PI/8){
-      fromY = from.y;
-      toX = to.x;
-      textX = fromX + 10;
-      textY = fromY - 20;
+      if(from.hasTop){
+        fromY = from.y;
+        from.hasTop = false;
+        textX = fromX + 10;
+        textY = fromY - 20;
+      } else {
+        fromX = from.x + from.width;
+        from.hasRight = false;
+        textX = fromX + 5;
+        textY = fromY - 5;
+      }
+      if(to.hasRight){
+        toX = to.x;
+        to.hasRight = false;
+      } else {
+        toY = to.y + to.height;
+        to.hasBottom = false;
+      }
     } else if(angle <= 5*PI/8 && angle >= 3*PI/8){
       fromY = from.y;
       toY = to.y + to.height;
       textX = fromX + 5;
       textY = fromY - 20;
+      from.hasTop = false;
+      to.hasBottom = false;
     } else if(angle <= 7*PI/8 && angle >= 5*PI/8){
-      fromY = from.y;
-      toX = to.x + from.width;
-      textX = fromX - 10;
-      textY = fromY - 20;
+      if(from.hasTop){
+        fromY = from.y;
+        from.hasTop = false;
+        textX = fromX - 10;
+        textY = fromY - 20;
+      } else {
+        fromX = from.x;
+        from.hasLeft = false;
+        textX = fromX - 20;
+        textY = fromY - 10;
+      }
+      if(to.hasLeft){
+        toX = to.x + from.width;
+        to.hasLeft = false;
+      } else {
+        toY = to.y + to.height;
+        to.hasBottom = false;
+      }
     } else if(angle <= 9*PI/8 && angle >= 7*PI/8){
       fromX = from.x;
       toX = to.x + from.width;
       textX = fromX - 20;
       textY = fromY - 10;
+      from.hasLeft = false;
+      to.hasRight = false;
     } else if(angle <= 11*PI/8 && angle >= 9*PI/8){
-      fromY = from.y + from.height;
-      toX = to.x + to.width;
-      textX = fromX - 20;
-      textY = fromY + 10;
+      if(from.hasBottom){
+        fromY = from.y + from.height;
+        textX = fromX - 20;
+        textY = fromY + 10;
+        from.hasBottom = false;
+      } else {
+        fromX = from.x;
+        textX = fromX - 20;
+        textY = fromY - 10;
+        from.hasLeft = false;
+      }
+      if(to.hasRight){
+        toX = to.x + to.width;
+        to.hasRight = false;
+      } else {
+        toY = to.y;
+        to.hasTop = false;
+      } 
     } else if(angle <= 13*PI/8 && angle >= 11*PI/8){
       fromY = from.y + from.height;
       toY = to.y;
       textX = fromX + 5;
       textY = fromY + 20;
+      from.hasBottom = false;
+      to.hasTop = false;
     } else if(angle <= 15*PI/8 && angle >= 13*PI/8){
-      fromY = from.y + from.height;
-      toX = to.x;
-      textX = fromX + 10;
-      textY = fromY + 20;
+      if(from.hasBottom){
+        fromY = from.y + from.height;
+        textX = fromX + 10;
+        textY = fromY + 20;
+        from.hasBottom = false;
+      } else {
+        fromX = from.x + from.width;
+        textX = fromX + 5;
+        textY = fromY + 20;
+        from.hasRight = false;
+      }
+      if(to.hasLeft){
+        toX = to.x;
+        to.hasLeft = false;
+      } else {
+        toY = to.y;
+        to.hasTop = false;
+      }
     }
 
     result.add(new Point(fromX, fromY));
