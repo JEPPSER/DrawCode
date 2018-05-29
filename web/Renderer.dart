@@ -62,9 +62,27 @@ class Renderer {
     for(int i = 0; i < objects.length; i++){
       if(objects[i] is Square){
         Square s = objects[i];
-        g.strokeRect(s.x, s.y, s.width, s.height);
-        int x = s.x + (s.width / 2).floor() - (s.text.length*scale*1.8).floor();
-        g.fillText(s.text, x, s.y + s.height / 2);
+        if(s.type == SquareType.STEP){
+          g.strokeRect(s.x, s.y, s.width, s.height);
+        } else if(s.type == SquareType.IO_BOX){
+          g.beginPath();
+          drawIOBox(g, s);
+          g.closePath();
+          g.stroke();
+        } else if(s.type == SquareType.DOCUMENT){
+          g.beginPath();
+          drawDocument(g, s);
+          g.closePath();
+          g.stroke();
+        } else if(s.type == SquareType.START || s.type == SquareType.END){
+          g.beginPath();
+          drawStart(g, s);
+          g.closePath();
+          g.stroke();
+        }
+        
+        int textX = s.x + (s.width / 2).floor() - (s.text.length*scale*1.8).floor();
+        g.fillText(s.text, textX, s.y + s.height / 2);
       } else if(objects[i] is If){
         If f = objects[i];
         g.beginPath();
@@ -296,6 +314,29 @@ class Renderer {
     g.lineTo(f.x + f.width, f.y + f.height / 2);
     g.lineTo(f.x + f.width / 2, f.y + f.height);
     g.lineTo(f.x, f.y + f.height / 2);
+  }
+
+  void drawIOBox(CanvasRenderingContext2D g, Square s){
+    g.moveTo(s.x + s.width * 0.15, s.y);
+    g.lineTo(s.x + s.width + s.width * 0.15, s.y);
+    g.lineTo(s.x + s.width - s.width * 0.15, s.y + s.height);
+    g.lineTo(s.x - s.width * 0.15, s.y + s.height);
+    g.lineTo(s.x + s.width * 0.15, s.y);
+  }
+
+  void drawDocument(CanvasRenderingContext2D g, Square s){
+    g.moveTo(s.x, s.y);
+    g.lineTo(s.x + s.width, s.y);
+    g.lineTo(s.x + s.width, s.y + s.height);
+    g.arc(s.x + (s.width / 4) * 3, s.y + s.height * 1.3, s.width / 3, -1, PI + 0.75, true);
+    g.arc(s.x + (s.width / 4), s.y + s.height * 0.7, s.width / 3, 1, PI - 0.75, false);
+    g.lineTo(s.x, s.y);
+  }
+
+  void drawStart(CanvasRenderingContext2D g, Square s){
+    g.moveTo(s.x + s.width - s.height / 2, s.y);
+    g.arc(s.x + s.width - s.height / 2, s.y + s.height / 2, s.height / 2, 3*PI/2, PI/2, false);
+    g.arc(s.x + s.height / 2, s.y + s.height / 2, s.height / 2, PI/2, 3*PI/2, false);
   }
 
   bool isFree(int x, int y, int width, int height, List<DiagramObject> objects){
