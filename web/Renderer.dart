@@ -80,17 +80,14 @@ class Renderer {
           g.closePath();
           g.stroke();
         }
-        
-        int textX = s.x + (s.width / 2).floor() - (s.text.length*scale*1.8).floor();
-        g.fillText(s.text, textX, s.y + s.height / 2);
+        drawText(g, s, scale);
       } else if(objects[i] is If){
         If f = objects[i];
         g.beginPath();
         drawDiamond(g, f);
         g.closePath();
         g.stroke();
-        int x = f.x + (f.width / 2).floor() - (f.text.length*scale*1.8).floor();
-        g.fillText(f.text, x, f.y + f.height / 2);
+        drawText(g, f, scale);
       }
     }
   }
@@ -231,32 +228,8 @@ class Renderer {
       s.height = (s.height*scale).floor();
       for(int i = 0; i < s.connections.length; i++){
         if(!doneObjects.contains(s.connections[i])){
-          int x = 0;
-          int y = 0;
 
           // Set x and y.
-          /*if(i == 0){
-           x = (s.x + s.width * 2).floor();
-           y = s.y;
-          } else if(i == 1){
-            x = s.x;
-            y = (s.y + s.height * 2).floor();
-          } else if(i == 2){
-            x = s.x;
-            y = (s.y - s.height * 2).floor();
-          } else{
-            Random rand = new Random();
-            x = rand.nextInt(800);
-            y = rand.nextInt(600);
-          }
-
-          // Check if point is valid.
-          if(!isFree(x, y, s.connections[i].width, s.connections[i].height, objects)){
-            Random rand = new Random();
-            x = rand.nextInt(800);
-            y = rand.nextInt(600);
-          }*/
-
           if(isFree(s.x + s.width * 2, s.y, s.width, s.height, objects)){
             s.connections[i].x = s.x + (s.width * 2).floor();
             s.connections[i].y = s.y;
@@ -350,6 +323,52 @@ class Renderer {
     g.moveTo(s.x + s.width - s.height / 2, s.y);
     g.arc(s.x + s.width - s.height / 2, s.y + s.height / 2, s.height / 2, 3*PI/2, PI/2, false);
     g.arc(s.x + s.height / 2, s.y + s.height / 2, s.height / 2, PI/2, 3*PI/2, false);
+  }
+
+  void drawText(CanvasRenderingContext2D g, DiagramObject o, scale){
+    if(o is Square){
+      Square s = o;
+      int lineLength = (s.width / (5 * scale)).floor();
+      List<String> lines = new List<String>();
+
+      if(lineLength < s.text.length){
+        int endIndex = 0;
+        for(int i = lineLength; i < s.text.length; i+=lineLength){
+          String str = s.text.substring(i - lineLength, i + 1);
+          lines.add(str);
+          endIndex = i + 1;
+        }
+        lines.add(s.text.substring(endIndex));
+      } else {
+        lines.add(s.text);
+      }
+      for(int i = 0; i < lines.length; i++){
+        int y = (s.y + s.height / 2 + i * s.height / 8).floor();
+        int x = (s.x + s.width / 10 + (lineLength - lines[i].length) * s.width / 40).floor();
+        g.fillText(lines[i], x, y);
+      }
+    } else if(o is If){
+      If s = o;
+      int lineLength = (s.width / (5 * scale)).floor();
+      List<String> lines = new List<String>();
+
+      if(lineLength < s.text.length){
+        int endIndex = 0;
+        for(int i = lineLength; i < s.text.length; i+=lineLength){
+          String str = s.text.substring(i - lineLength, i);
+          lines.add(str);
+          endIndex = i;
+        }
+        lines.add(s.text.substring(endIndex, s.text.length - 1));
+      } else {
+        lines.add(s.text);
+      }
+      for(int i = 0; i < lines.length; i++){
+        int y = (s.y + s.height / 2 + i * s.height / 8).floor();
+        int x = (s.x + s.width / 10 + (lineLength - lines[i].length) * s.width / 40).floor();
+        g.fillText(lines[i], x, y);
+      }
+    }
   }
 
   bool isFree(int x, int y, int width, int height, List<DiagramObject> objects){
