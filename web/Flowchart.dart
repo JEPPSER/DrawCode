@@ -12,8 +12,8 @@ class Flowchart {
   void render(CanvasRenderingContext2D g, List<DiagramObject> objects){
 
     double scale =  2.0 - (objects.length / 10);
-    if(scale < 0.5){
-      scale = 0.5;
+    if(scale < 1.5){
+      scale = 1.5;
     }
     g.font = (8 * scale).toString() + "px Arial";
 

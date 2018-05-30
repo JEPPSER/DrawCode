@@ -11,8 +11,8 @@ class FlowchartRenderer {
 
   void render(CanvasRenderingContext2D g, List<DiagramObject> objects){
     double scale =  2.0 - (objects.length / 10);
-    if(scale < 0.5){
-      scale = 0.5;
+    if(scale < 1.5){
+      scale = 1.5;
     }
 
     g.font = (8 * scale).toString() + "px Arial";
@@ -164,7 +164,7 @@ class FlowchartRenderer {
       }
     } else if(angle <= 9*PI/8 && angle >= 7*PI/8){
       fromX = from.x;
-      toX = to.x + from.width;
+      toX = to.x + to.width;
       textX = fromX - 20;
       textY = fromY - 10;
       from.hasLeft = false;
@@ -262,9 +262,9 @@ class FlowchartRenderer {
       if(lineLength < s.text.length){
         int endIndex = 0;
         for(int i = lineLength; i < s.text.length; i+=lineLength){
-          String str = s.text.substring(i - lineLength, i + 1);
+          String str = s.text.substring(i - lineLength, i);
           lines.add(str);
-          endIndex = i + 1;
+          endIndex = i;
         }
         lines.add(s.text.substring(endIndex));
       } else {
@@ -272,7 +272,7 @@ class FlowchartRenderer {
       }
       for(int i = 0; i < lines.length; i++){
         int y = (s.y + s.height / 2 + i * s.height / 8).floor();
-        int x = (s.x + s.width / 10 + (lineLength - lines[i].length) * s.width / 40).floor();
+        int x = (s.x + s.width / 7 + (lineLength - lines[i].length) * s.width / 40).floor();
         g.fillText(lines[i], x, y);
       }
     } else if(o is If){
@@ -285,7 +285,7 @@ class FlowchartRenderer {
         for(int i = lineLength; i < s.text.length; i+=lineLength){
           String str = s.text.substring(i - lineLength, i);
           lines.add(str);
-          endIndex = i + 1;
+          endIndex = i;
         }
         lines.add(s.text.substring(endIndex));
       } else {
@@ -293,7 +293,7 @@ class FlowchartRenderer {
       }
       for(int i = 0; i < lines.length; i++){
         int y = (s.y + s.height / 2 + i * s.height / 8).floor();
-        int x = (s.x + s.width / 10 + (lineLength - lines[i].length) * s.width / 40).floor();
+        int x = (s.x + s.width / 7 + (lineLength - lines[i].length) * s.width / 40).floor();
         g.fillText(lines[i], x, y);
       }
     }
