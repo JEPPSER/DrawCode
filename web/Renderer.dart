@@ -115,8 +115,8 @@ class Renderer {
     if(angle <= PI/8 || angle >= 15*PI/8){
       fromX = from.x + from.width;
       toX = to.x;
-      textX = fromX + 5;
-      textY = fromY - 5;
+      textX = fromX + 10;
+      textY = fromY - 10;
       from.hasLeft = false;
       to.hasRight = false;
     } else if(angle <= 3*PI/8 && angle >= PI/8){
@@ -128,8 +128,8 @@ class Renderer {
       } else {
         fromX = from.x + from.width;
         from.hasRight = false;
-        textX = fromX + 5;
-        textY = fromY - 5;
+        textX = fromX + 10;
+        textY = fromY - 10;
       }
       if(to.hasRight){
         toX = to.x;
@@ -141,7 +141,7 @@ class Renderer {
     } else if(angle <= 5*PI/8 && angle >= 3*PI/8){
       fromY = from.y;
       toY = to.y + to.height;
-      textX = fromX + 5;
+      textX = fromX + 10;
       textY = fromY - 20;
       from.hasTop = false;
       to.hasBottom = false;
@@ -193,7 +193,7 @@ class Renderer {
     } else if(angle <= 13*PI/8 && angle >= 11*PI/8){
       fromY = from.y + from.height;
       toY = to.y;
-      textX = fromX + 5;
+      textX = fromX + 10;
       textY = fromY + 20;
       from.hasBottom = false;
       to.hasTop = false;
@@ -205,7 +205,7 @@ class Renderer {
         from.hasBottom = false;
       } else {
         fromX = from.x + from.width;
-        textX = fromX + 5;
+        textX = fromX + 10;
         textY = fromY + 20;
         from.hasRight = false;
       }
@@ -235,7 +235,7 @@ class Renderer {
           int y = 0;
 
           // Set x and y.
-          if(i == 0){
+          /*if(i == 0){
            x = (s.x + s.width * 2).floor();
            y = s.y;
           } else if(i == 1){
@@ -255,10 +255,23 @@ class Renderer {
             Random rand = new Random();
             x = rand.nextInt(800);
             y = rand.nextInt(600);
+          }*/
+
+          if(isFree(s.x + s.width * 2, s.y, s.width, s.height, objects)){
+            s.connections[i].x = s.x + (s.width * 2).floor();
+            s.connections[i].y = s.y;
+          } else if(isFree(s.x, s.y + s.height * 2, s.width, s.height, objects)){
+            s.connections[i].x = s.x + (s.width / 2).floor() - (s.connections[i].width * scale / 2).floor();
+            s.connections[i].y = s.y + s.height * 2;
+          } else if(isFree(s.x, s.y - s.height * 2, s.width, s.height, objects)){
+            s.connections[i].x = s.x + (s.width / 2).floor() - (s.connections[i].width * scale / 2).floor();
+            s.connections[i].y = s.y - s.height * 2;
+          } else {
+            Random rand = new Random();
+            s.connections[i].x = rand.nextInt(800);
+            s.connections[i].y = rand.nextInt(600);
           }
 
-          s.connections[i].x = x;
-          s.connections[i].y = y;
           doneObjects.add(s.connections[i]);
           placeConnections(s.connections[i], objects, scale);
         }

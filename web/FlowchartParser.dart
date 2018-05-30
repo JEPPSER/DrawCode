@@ -21,8 +21,6 @@ class FlowchartParser {
         square(list, lines[i], i, SquareType.DOCUMENT);
       } else if(lines[i].startsWith("If ")){
         ifbox(list, lines[i], i);
-      } else if(lines[i].startsWith("Text ")){
-        text(list, lines[i], i);
       } else if(lines[i].contains("=") && lines[i].split("=").length == 2){
         assignment(list, lines[i], i);
       } else if(lines[i].contains("->") && lines[i].split("->").length == 2){
@@ -30,23 +28,6 @@ class FlowchartParser {
       }
     }
     return list;
-  }
-
-  void text(List<DiagramObject> list, String line, int lineNumber){
-    List<String> parts = line.split(" ");
-    if(parts.length == 2 && !line.contains(".")){
-      for(int i = 0; i < list.length; i++){
-        if(parts[1] == list[i].name){
-          print("ERROR: variable name already exists\nline: $lineNumber");
-          return;
-        }
-      }
-      Text txt = new Text();
-      txt.name = parts[1];
-      list.add(txt);
-    } else {
-      print("ERROR: invalid variable name\nline: $lineNumber");
-    }
   }
 
   void ifbox(List<DiagramObject> list, String line, int lineNumber){
