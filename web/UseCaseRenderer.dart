@@ -14,8 +14,9 @@ class UseCaseRenderer {
     }
     g.font = (8 * scale).toString() + "px Arial";
 
-    // Draw connections
     g.beginPath();
+
+    // Draw connections
     for(int i = 0; i < objects.length; i++){
       if(objects[i] is Actor){
         Actor a = objects[i];
@@ -40,19 +41,41 @@ class UseCaseRenderer {
         }
       }
     }
-    g.closePath();
-    g.stroke();
 
     // Draw objects
     for(int i = 0; i < objects.length; i++){
       if(objects[i] is Actor){
-        g.strokeRect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        Actor actor = objects[i];
+        drawActor(g, actor);
       } else if(objects[i] is UseCase){
-        g.strokeRect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        UseCase uc = objects[i];
+        drawUseCase(g, uc);
       } else if(objects[i] is System){
-        g.strokeRect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        g.rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
       }
     }
+
+    g.closePath();
+    g.stroke();
+  }
+
+  void drawUseCase(CanvasRenderingContext2D g, UseCase uc){
+    g.moveTo(uc.x + uc.width, uc.y + uc.height / 2);
+    g.ellipse(uc.x + uc.width / 2, uc.y + uc.height / 2, uc.width / 2, uc.height / 2,
+       0, 0, 2*PI, false);
+  }
+
+  void drawActor(CanvasRenderingContext2D g, Actor actor){
+    g.moveTo(actor.x, actor.y + actor.height);
+    g.lineTo(actor.x + actor.width / 2, actor.y + actor.height * 0.7);
+    g.moveTo(actor.x + actor.width , actor.y + actor.height);
+    g.lineTo(actor.x + actor.width / 2, actor.y + actor.height * 0.7);
+    g.lineTo(actor.x + actor.width / 2, actor.y + actor.height * 0.3);
+    g.moveTo(actor.x, actor.y + actor.height * 0.4);
+    g.lineTo(actor.x + actor.width, actor.y + actor.height * 0.4);
+    g.moveTo(actor.x + actor.width / 2, actor.y + actor.height * 0.3);
+    g.arc(actor.x + actor.width / 2, actor.y + actor.height * 0.15, actor.height * 0.15,
+       PI/2, -3*PI/2, false);
   }
 
   void drawDottedArrow(CanvasRenderingContext2D g, fromX, fromY, toX, toY){
