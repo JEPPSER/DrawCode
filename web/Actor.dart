@@ -10,5 +10,7 @@ class Actor extends DiagramObject {
   Actor(){
     connections = new List<UseCase>();
     implementations = new List<Actor>();
+    width = 30;
+    height = 50;
   }
 }

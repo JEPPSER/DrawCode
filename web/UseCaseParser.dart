@@ -26,9 +26,35 @@ class UseCaseParser {
         extension(list, lines[i], i);
       } else if(lines[i].contains(" includes ")){
         inclusion(list, lines[i], i);
+      } else if(lines[i].contains(" add ")){
+        add(list, lines[i], i);
       }
     }
     return list;
+  }
+
+  void add(List<DiagramObject> list, String line, int lineNumber){
+    List<String> parts = line.split(" add ");
+    int a = -1;
+    int b = -1;
+    for(int i = 0; i < list.length; i++){
+      if(list[i].name == parts[0]){
+        a = i;
+      } else if(list[i].name == parts[1]){
+        b = i;
+      }
+    }
+    if(a != -1 && b != -1){
+      if(list[a] is System && list[b] is UseCase){
+        System sys = list[a];
+        UseCase uc = list[b];
+        sys.useCases.add(uc);
+      } else {
+        print("ERROR: invalid variable types\nline: $lineNumber");
+      }
+    } else {
+      print("ERROR: invalid variable names\nline: $lineNumber");
+    }
   }
 
   void inclusion(List<DiagramObject> list, String line, int lineNumber){

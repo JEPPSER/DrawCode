@@ -4,6 +4,7 @@ import 'DiagramObject.dart';
 import 'Flowchart.dart';
 import 'FlowchartListener.dart';
 import 'UseCaseParser.dart';
+import 'UseCaseDiagram.dart';
 import 'dart:async';
 
 main(){
@@ -31,6 +32,8 @@ main(){
     } else if(str.startsWith("<usecase>")){
       UseCaseParser parser = new UseCaseParser();
       objects = parser.parse(str);
+      UseCaseDiagram ucd = new UseCaseDiagram();
+      ucd.render(g, objects);
     }
   });
 }

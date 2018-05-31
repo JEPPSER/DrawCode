@@ -9,5 +9,7 @@ class UseCase extends DiagramObject {
   UseCase(){
     extensions = new List<UseCase>();
     inclusions = new List<UseCase>();
+    width = 80;
+    height = 60;
   }
 }
