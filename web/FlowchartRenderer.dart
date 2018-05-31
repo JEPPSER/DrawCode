@@ -84,7 +84,7 @@ class FlowchartRenderer {
   }
 
   void drawArrow(CanvasRenderingContext2D g, int fromX, int fromY, int toX, int toY){
-    int headlen = 10;
+    int headlen = 15;
     double angle = atan2(toY  - fromY, toX - fromX);
     g.moveTo(fromX, fromY);
     g.lineTo(toX, toY);

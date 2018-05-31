@@ -61,7 +61,6 @@ class UseCaseDiagram {
             UseCase rightMostX = sys.useCases[0];
             UseCase topY = sys.useCases[0];
             UseCase bottomY = sys.useCases[0];
-            print(sys.useCases.length);
             for(int j = 1; j < sys.useCases.length; j++){
               if(sys.useCases[j].x < leftMostX.x){
                 leftMostX = sys.useCases[j];
