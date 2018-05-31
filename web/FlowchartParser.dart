@@ -63,7 +63,7 @@ class FlowchartParser {
         Square s = list[a];
         s.connections.add(list[b]);
       } else {
-        print("ERROR: invalid variable names\nline: $lineNumber");
+        print("ERROR: invalid variable type\nline: $lineNumber");
       }
     } else {
       print("ERROR: invalid variable names\nline: $lineNumber");

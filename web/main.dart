@@ -3,6 +3,7 @@ import 'FlowchartParser.dart';
 import 'DiagramObject.dart';
 import 'Flowchart.dart';
 import 'FlowchartListener.dart';
+import 'UseCaseParser.dart';
 import 'dart:async';
 
 main(){
@@ -27,6 +28,9 @@ main(){
       FlowchartListener fl = new FlowchartListener(myCanvas, g, objects);
       fl.listen();
       subs = fl.getSubscriptions();
+    } else if(str.startsWith("<usecase>")){
+      UseCaseParser parser = new UseCaseParser();
+      objects = parser.parse(str);
     }
   });
 }

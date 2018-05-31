@@ -43,7 +43,7 @@ class FlowchartListener {
         currentObject.x += mousePos.x - startPoint.x;
         currentObject.y += mousePos.y - startPoint.y;
         g.clearRect(0, 0, canvas.width, canvas.height);
-        reDraw();
+        renderer.render(g, objects);
         startPoint = mousePos;
       }
     });
@@ -62,11 +62,6 @@ class FlowchartListener {
     Rectangle rect = canvas.getBoundingClientRect();
     Point mousePos = new Point(me.client.x - rect.left, me.client.y - rect.top);
     return mousePos;
-  }
-
-  reDraw(){
-    g.clearRect(0, 0, canvas.width, canvas.height);
-    renderer.render(g, objects);
   }
   
   List<StreamSubscription> getSubscriptions(){
