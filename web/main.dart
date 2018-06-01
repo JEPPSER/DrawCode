@@ -5,6 +5,7 @@ import 'Flowchart.dart';
 import 'FlowchartListener.dart';
 import 'UseCaseParser.dart';
 import 'UseCaseDiagram.dart';
+import 'UseCaseListener.dart';
 import 'dart:async';
 
 main(){
@@ -34,6 +35,9 @@ main(){
       objects = parser.parse(str);
       UseCaseDiagram ucd = new UseCaseDiagram();
       ucd.render(g, objects);
+      UseCaseListener ucl = new UseCaseListener(myCanvas, g, objects);
+      ucl.listen();
+      subs = ucl.getSubscriptions();
     }
   });
 }

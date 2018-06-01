@@ -34,10 +34,18 @@ class UseCaseRenderer {
         for(int j = 0; j < uc.extensions.length; j++){
           List<Point> points = getPoints(uc, uc.extensions[j]);
           drawDottedArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
+          int x = points[0].x + (points[1].x - points[0].x) / 2;
+          int y = points[0].y + (points[1].y - points[0].y) / 2 - 5;
+          x = (x - 10 * scale * 1.9).floor();
+          g.fillText("<<extend>>", x, y);
         }
         for(int j = 0; j < uc.inclusions.length; j++){
           List<Point> points = getPoints(uc, uc.inclusions[j]);
           drawDottedArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
+          int x = points[0].x + (points[1].x - points[0].x) / 2;
+          int y = points[0].y + (points[1].y - points[0].y) / 2 - 5;
+          x = (x - 11 * scale * 1.9).floor();
+          g.fillText("<<include>>", x, y);
         }
       }
     }
@@ -46,17 +54,58 @@ class UseCaseRenderer {
     for(int i = 0; i < objects.length; i++){
       if(objects[i] is Actor){
         Actor actor = objects[i];
+        if(actor.text == null){
+          actor.text = " ";
+        }
         drawActor(g, actor);
+        int x = ((actor.x + actor.width / 2) - actor.text.length * scale * 1.9).floor();
+        g.fillText(actor.text, x, actor.y + actor.height);
       } else if(objects[i] is UseCase){
         UseCase uc = objects[i];
+        if(uc.text == null){
+          uc.text = " ";
+        }
         drawUseCase(g, uc);
+        drawText(g, uc, scale);
       } else if(objects[i] is System){
-        g.rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        System sys = objects[i];
+        setSystemPosition(sys);
+        if(sys.text == null){
+          sys.text = " ";
+        }
+        g.rect(sys.x, sys.y, sys.width, sys.height);
+        int x = ((sys.x + sys.width / 2) - sys.text.length * scale * 1.9).floor();
+        g.fillText(sys.text, x, sys.y + 20);
       }
     }
 
     g.closePath();
     g.stroke();
+  }
+
+  void setSystemPosition(System sys){
+    if(sys.useCases.length > 0){
+      UseCase leftMostX = sys.useCases[0];
+      UseCase rightMostX = sys.useCases[0];
+      UseCase topY = sys.useCases[0];
+      UseCase bottomY = sys.useCases[0];
+      for(int j = 1; j < sys.useCases.length; j++){
+        if(sys.useCases[j].x < leftMostX.x){
+          leftMostX = sys.useCases[j];
+        } else if(sys.useCases[j].x > rightMostX.x){
+          rightMostX = sys.useCases[j];
+        }
+        if(sys.useCases[j].y < topY.y){
+          topY = sys.useCases[j];
+        } else if(sys.useCases[j].y > bottomY.y){
+          bottomY = sys.useCases[j];
+        }
+      }
+      sys.x = leftMostX.x - 50;
+      sys.y = topY.y - 50;
+      sys.width = rightMostX.x + rightMostX.width + 50 - sys.x;
+      sys.height = bottomY.y + bottomY.height + 50 - sys.y;
+    }
   }
 
   void drawUseCase(CanvasRenderingContext2D g, UseCase uc){
@@ -66,23 +115,27 @@ class UseCaseRenderer {
   }
 
   void drawActor(CanvasRenderingContext2D g, Actor actor){
-    g.moveTo(actor.x, actor.y + actor.height);
-    g.lineTo(actor.x + actor.width / 2, actor.y + actor.height * 0.7);
-    g.moveTo(actor.x + actor.width , actor.y + actor.height);
-    g.lineTo(actor.x + actor.width / 2, actor.y + actor.height * 0.7);
-    g.lineTo(actor.x + actor.width / 2, actor.y + actor.height * 0.3);
-    g.moveTo(actor.x, actor.y + actor.height * 0.4);
-    g.lineTo(actor.x + actor.width, actor.y + actor.height * 0.4);
-    g.moveTo(actor.x + actor.width / 2, actor.y + actor.height * 0.3);
-    g.arc(actor.x + actor.width / 2, actor.y + actor.height * 0.15, actor.height * 0.15,
+    int x = (actor.x + actor.width * 0.1).floor();
+    int y = (actor.y + actor.height * 0.1).floor();
+    int width = (actor.width * 0.8).floor();
+    int height = (actor.height * 0.8).floor();
+    g.moveTo(x, y + height);
+    g.lineTo(x + width / 2, y + height * 0.7);
+    g.moveTo(x + width , y + height);
+    g.lineTo(x + width / 2, y + height * 0.7);
+    g.lineTo(x + width / 2, y + height * 0.3);
+    g.moveTo(x, y + height * 0.4);
+    g.lineTo(x + width, y + height * 0.4);
+    g.moveTo(x + width / 2, y + height * 0.3);
+    g.arc(x + width / 2, y + height * 0.15, height * 0.15,
        PI/2, -3*PI/2, false);
   }
 
   void drawDottedArrow(CanvasRenderingContext2D g, fromX, fromY, toX, toY){
     int headlen = 15;
     double angle = atan2(toY - fromY, toX - fromX);
-    int x = (headlen * 0.9 * cos(angle)).floor();
-    int y = (headlen * 0.9 * sin(angle)).floor();
+    double x = headlen * 0.9 * cos(angle);
+    double y = headlen * 0.9 * sin(angle);
     g.moveTo(fromX, fromY);
     Point point = new Point(fromX, fromY);
     int i = 0;
@@ -245,5 +298,27 @@ class UseCaseRenderer {
     result.add(new Point(toX, toY));
     result.add(new Point(textX, textY));
     return result;
+  }
+
+  void drawText(CanvasRenderingContext2D g, UseCase uc, scale){
+    int lineLength = (uc.width / (5 * scale)).floor();
+    List<String> lines = new List<String>();
+
+    if(lineLength < uc.text.length){
+      int endIndex = 0;
+      for(int i = lineLength; i < uc.text.length; i+=lineLength){
+        String str = uc.text.substring(i - lineLength, i);
+        lines.add(str);
+        endIndex = i;
+      }
+      lines.add(uc.text.substring(endIndex));
+    } else {
+      lines.add(uc.text);
+    }
+    for(int i = 0; i < lines.length; i++){
+      int y = (uc.y + uc.height / 2 + i * uc.height / 8).floor();
+      int x = ((uc.x + uc.width / 2) - lines[i].length * scale * 1.9).floor();
+      g.fillText(lines[i], x, y);
+    }
   }
 }

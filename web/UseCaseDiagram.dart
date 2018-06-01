@@ -54,31 +54,6 @@ class UseCaseDiagram {
             uCounter2++;
           }
           doneObjects.add(uc);
-        } else if(objects[i] is System){
-          System sys = objects[i];
-          if(sys.useCases.length > 0){
-            UseCase leftMostX = sys.useCases[0];
-            UseCase rightMostX = sys.useCases[0];
-            UseCase topY = sys.useCases[0];
-            UseCase bottomY = sys.useCases[0];
-            for(int j = 1; j < sys.useCases.length; j++){
-              if(sys.useCases[j].x < leftMostX.x){
-                leftMostX = sys.useCases[j];
-              } else if(sys.useCases[j].x > rightMostX.x){
-                rightMostX = sys.useCases[j];
-              }
-              if(sys.useCases[j].y < topY.y){
-                topY = sys.useCases[j];
-              } else if(sys.useCases[j].y > bottomY.y){
-                bottomY = sys.useCases[j];
-              }
-            }
-            sys.x = leftMostX.x - 50;
-            sys.y = topY.y - 50;
-            sys.width = rightMostX.x + rightMostX.width + 50 - sys.x;
-            sys.height = bottomY.y + bottomY.height + 50 - sys.y;
-          }
-          doneObjects.add(sys);
         }
       }
     }

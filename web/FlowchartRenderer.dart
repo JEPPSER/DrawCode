@@ -272,7 +272,7 @@ class FlowchartRenderer {
       }
       for(int i = 0; i < lines.length; i++){
         int y = (s.y + s.height / 2 + i * s.height / 8).floor();
-        int x = (s.x + s.width / 7 + (lineLength - lines[i].length) * s.width / 40).floor();
+        int x = ((s.x + s.width / 2) - lines[i].length * scale * 1.9).floor();
         g.fillText(lines[i], x, y);
       }
     } else if(o is If){
@@ -293,7 +293,7 @@ class FlowchartRenderer {
       }
       for(int i = 0; i < lines.length; i++){
         int y = (s.y + s.height / 2 + i * s.height / 8).floor();
-        int x = (s.x + s.width / 7 + (lineLength - lines[i].length) * s.width / 40).floor();
+        int x = ((s.x + s.width / 2) - lines[i].length * scale * 1.9).floor();
         g.fillText(lines[i], x, y);
       }
     }
