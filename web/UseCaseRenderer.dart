@@ -21,7 +21,12 @@ class UseCaseRenderer {
       if(objects[i] is Actor){
         Actor a = objects[i];
         for(int j = 0; j < a.connections.length; j++){
-          List<Point> points = getPoints(a, a.connections[j]);
+          UseCase u = new UseCase();
+          u.x = a.x;
+          u.y = a.y;
+          u.width = 1;
+          u.height = 1;
+          List<Point> points = getUseCasePoints(u, a.connections[j]);
           g.moveTo(a.x + a.width / 2, a.y + a.height / 2);
           g.lineTo(points[1].x, points[1].y);
         }
@@ -32,7 +37,7 @@ class UseCaseRenderer {
       } else if(objects[i] is UseCase){
         UseCase uc = objects[i];
         for(int j = 0; j < uc.extensions.length; j++){
-          List<Point> points = getPoints(uc, uc.extensions[j]);
+          List<Point> points = getUseCasePoints(uc, uc.extensions[j]);
           drawDottedArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
           int x = points[0].x + (points[1].x - points[0].x) / 2;
           int y = points[0].y + (points[1].y - points[0].y) / 2 - 5;
@@ -40,7 +45,7 @@ class UseCaseRenderer {
           g.fillText("<<extend>>", x, y);
         }
         for(int j = 0; j < uc.inclusions.length; j++){
-          List<Point> points = getPoints(uc, uc.inclusions[j]);
+          List<Point> points = getUseCasePoints(uc, uc.inclusions[j]);
           drawDottedArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
           int x = points[0].x + (points[1].x - points[0].x) / 2;
           int y = points[0].y + (points[1].y - points[0].y) / 2 - 5;
@@ -81,6 +86,22 @@ class UseCaseRenderer {
 
     g.closePath();
     g.stroke();
+  }
+
+  List<Point> getUseCasePoints(UseCase from, UseCase to){
+    List<Point> points = new List<Point>();
+    double angle = atan2(to.y - from.y, to.x - from.x);
+    if(angle < 0){
+      angle += 2*PI;
+    }
+    double a = to.width / 2;
+    double b = to.height / 2;
+    double radius = (a * b) / sqrt(a*a * sin(angle)*sin(angle) + b*b * cos(angle)*cos(angle));
+    double x = radius * cos(angle);
+    double y = radius * sin(angle);
+    points.add(new Point(from.x + from.width / 2 + x, from.y + from.height / 2 + y));
+    points.add(new Point(to.x + to.width / 2 - x, to.y + to.height / 2 - y));
+    return points;
   }
 
   void setSystemPosition(System sys){
