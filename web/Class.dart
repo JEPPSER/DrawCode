@@ -7,22 +7,22 @@ class Class extends DiagramObject{
   ClassType type;
   List<Class> inheritances;
   List<Class> dependencies;
-  List<Class> realization;
+  List<Class> realizations;
   List<Association> associations;
   List<Association> dAssociations;
   List<Association> aggregations;
-  List<Association> composition;
+  List<Association> compositions;
 
   List<String> members;
 
   Class(){
     inheritances = new List<Class>();
     dependencies = new List<Class>();
-    realization = new List<Class>();
+    realizations = new List<Class>();
     associations = new List<Association>();
     dAssociations = new List<Association>();
     aggregations = new List<Association>();
-    composition = new List<Association>();
+    compositions = new List<Association>();
     members = new List<String>();
   }
 }
