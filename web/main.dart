@@ -3,6 +3,7 @@ import 'FlowchartParser.dart';
 import 'DiagramObject.dart';
 import 'Flowchart.dart';
 import 'FlowchartListener.dart';
+import 'FlowchartRenderer.dart';
 import 'UseCaseParser.dart';
 import 'UseCaseDiagram.dart';
 import 'UseCaseListener.dart';
@@ -11,6 +12,7 @@ import 'dart:async';
 main(){
   TextAreaElement txtArea = querySelector('#txtArea');
   ButtonInputElement drawBtn = querySelector('#drawBtn');
+  var exportBtn = querySelector('#exportBtn');
   CanvasElement myCanvas = querySelector('#myCanvas');
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
   List<DiagramObject> objects;
@@ -39,5 +41,18 @@ main(){
       ucl.listen();
       subs = ucl.getSubscriptions();
     }
+  });
+
+  exportBtn.onClick.listen((_) {
+    g.setFillColorRgb(255, 255, 255);
+    g.fillRect(0, 0, 1920, 1080);
+    g.setFillColorRgb(0, 0, 0);
+    String str = txtArea.value;
+    if(str.startsWith("<flowchart")){
+      FlowchartRenderer renderer = new FlowchartRenderer();
+      renderer.render(g, objects);
+    }
+    String img = myCanvas.toDataUrl('image/jpeg', 1);
+    exportBtn.href = img;
   });
 }

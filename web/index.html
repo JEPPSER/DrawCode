@@ -30,6 +30,14 @@
         #txtArea:focus {
             outline: none;
         }
+        .button {
+            border-style: solid;
+            border-width : 1px 1px 1px 1px;
+            text-decoration : none;
+            padding : 4px;
+            border-color : #000000;
+            border-radius: 5px;
+        }
     </style>
     <body>
         <div class="left">
@@ -41,6 +49,7 @@
         <div class="right">
             <canvas id="myCanvas" width="1920px" height="1080px"></canvas>
         </div>
+        <a href="#" class="button" id="exportBtn" download="my-file-name.png">Export</a>
 
         <script type="application/dart" src="main.dart"></script>
     </body>
