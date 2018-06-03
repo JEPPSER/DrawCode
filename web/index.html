@@ -4,13 +4,29 @@
         <title>Title</title>
         <link rel="styleheet" href="main.css">
     </head>
+    <style>
+        .left {
+            float: left;
+            display: table-cell;
+            vertical-align:middle;
+        }
+        .right {
+            width: 1000px;
+            height: 755px;
+            float: left;
+            overflow: scroll;
+            border:1px solid #000000;
+        }
+    </style>
     <body>
-        <div>
+        <div class="left">
             <textarea id="txtArea" rows="50" cols="50"></textarea>
-            <canvas id="myCanvas" width="1000" height="755" style="border:1px solid #000000;"></canvas>
+            <div>
+                <input type="button" id="drawBtn" value="Draw">  
+            </div>
         </div>
-        <div>
-            <input type="button" id="drawBtn" value="Draw">
+        <div class="right">
+            <canvas id="myCanvas" width="1920px" height="1080px"></canvas>
         </div>
 
         <script type="application/dart" src="main.dart"></script>
