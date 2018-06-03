@@ -259,19 +259,30 @@ class FlowchartRenderer {
       int lineLength = (s.width / (5 * scale)).floor();
       List<String> lines = new List<String>();
 
-      if(lineLength < s.text.length){
+      if(lineLength < s.text.length && s.text.contains(" ")){
         int endIndex = 0;
-        for(int i = lineLength; i < s.text.length; i+=lineLength){
-          String str = s.text.substring(i - lineLength, i);
-          lines.add(str);
-          endIndex = i;
+        int spaceIndex = 0;
+        int length = 0;
+        for(int i = 1; i < s.text.length; i++){
+          length++;
+          if(s.text[i] == " "){
+            spaceIndex = i;
+          }
+          if(length >= lineLength && spaceIndex != 0){
+            String str = s.text.substring(i - length, spaceIndex);
+            length = 0;
+            i = spaceIndex;
+            spaceIndex = 0;
+            lines.add(str);
+            endIndex = i;
+          }
         }
         lines.add(s.text.substring(endIndex));
       } else {
         lines.add(s.text);
       }
       for(int i = 0; i < lines.length; i++){
-        int y = (s.y + s.height / 2 + i * s.height / 8).floor();
+        int y = (s.y + s.height * 0.55 + i * s.height / 8 - (lines.length - 1) * s.height / 16).floor();
         int x = ((s.x + s.width / 2) - lines[i].length * scale * 1.9).floor();
         g.fillText(lines[i], x, y);
       }
@@ -280,19 +291,30 @@ class FlowchartRenderer {
       int lineLength = (s.width / (5 * scale)).floor();
       List<String> lines = new List<String>();
 
-      if(lineLength < s.text.length){
+      if(lineLength < s.text.length && s.text.contains(" ")){
         int endIndex = 0;
-        for(int i = lineLength; i < s.text.length; i+=lineLength){
-          String str = s.text.substring(i - lineLength, i);
-          lines.add(str);
-          endIndex = i;
+        int spaceIndex = 0;
+        int length = 0;
+        for(int i = 1; i < s.text.length; i++){
+          length++;
+          if(s.text[i] == " "){
+            spaceIndex = i;
+          }
+          if(length >= lineLength && spaceIndex != 0){
+            String str = s.text.substring(i - length, spaceIndex);
+            length = 0;
+            i = spaceIndex;
+            spaceIndex = 0;
+            lines.add(str);
+            endIndex = i;
+          }
         }
         lines.add(s.text.substring(endIndex));
       } else {
         lines.add(s.text);
       }
       for(int i = 0; i < lines.length; i++){
-        int y = (s.y + s.height / 2 + i * s.height / 8).floor();
+        int y = (s.y + s.height * 0.55 + i * s.height / 8 - (lines.length - 1) * s.height / 16).floor();
         int x = ((s.x + s.width / 2) - lines[i].length * scale * 1.9).floor();
         g.fillText(lines[i], x, y);
       }

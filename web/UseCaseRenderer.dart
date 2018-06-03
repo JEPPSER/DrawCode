@@ -325,19 +325,30 @@ class UseCaseRenderer {
     int lineLength = (uc.width / (5 * scale)).floor();
     List<String> lines = new List<String>();
 
-    if(lineLength < uc.text.length){
+    if(lineLength < uc.text.length && uc.text.contains(" ")){
       int endIndex = 0;
-      for(int i = lineLength; i < uc.text.length; i+=lineLength){
-        String str = uc.text.substring(i - lineLength, i);
-        lines.add(str);
-        endIndex = i;
+      int spaceIndex = 0;
+      int length = 0;
+      for(int i = 1; i < uc.text.length; i++){
+        length++;
+        if(uc.text[i] == " "){
+          spaceIndex = i;
+        }
+        if(length >= lineLength && spaceIndex != 0){
+          String str = uc.text.substring(i - length, spaceIndex);
+          length = 0;
+          i = spaceIndex;
+          spaceIndex = 0;
+          lines.add(str);
+          endIndex = i;
+        }
       }
       lines.add(uc.text.substring(endIndex));
     } else {
       lines.add(uc.text);
     }
     for(int i = 0; i < lines.length; i++){
-      int y = (uc.y + uc.height / 2 + i * uc.height / 8).floor();
+      int y = (uc.y + uc.height * 0.55 + i * uc.height / 8 - (lines.length - 1) * uc.height / 16).floor();
       int x = ((uc.x + uc.width / 2) - lines[i].length * scale * 1.9).floor();
       g.fillText(lines[i], x, y);
     }
