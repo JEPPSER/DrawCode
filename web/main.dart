@@ -9,12 +9,15 @@ import 'UseCaseDiagram.dart';
 import 'UseCaseListener.dart';
 import 'UseCaseRenderer.dart';
 import 'dart:async';
-import 'dart:js';
 
 main(){
   TextAreaElement txtArea = querySelector('#txtArea');
   ButtonInputElement drawBtn = querySelector('#drawBtn');
+  TextInputElement fileText= querySelector('#fileText');
+  var fileBtn = querySelector('#fileBtn');
   var exportBtn = querySelector('#exportBtn');
+  var myModal = querySelector('#myModal');
+  var span = document.getElementsByClassName("close")[0];
   CanvasElement myCanvas = querySelector('#myCanvas');
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
   List<DiagramObject> objects;
@@ -46,6 +49,13 @@ main(){
   });
 
   exportBtn.onClick.listen((_) {
+    fileText.value = null;
+    myModal.style.display = "block";
+    fileBtn.attributes.remove('download');
+    fileBtn.attributes.remove('href');
+  });
+
+  fileBtn.onClick.listen((_) {
     g.setFillColorRgb(255, 255, 255);
     g.fillRect(0, 0, 1920, 1080);
     g.setFillColorRgb(0, 0, 0);
@@ -57,11 +67,23 @@ main(){
       UseCaseRenderer renderer = new UseCaseRenderer();
       renderer.render(g, objects);
     }
+
+    String fileName = fileText.value;
     String img = myCanvas.toDataUrl('image/png', 1);
-    var name = context.callMethod('prompt', ['Enter file name: ', 'Untitled']);
-    if(name != null && name != ""){
-      exportBtn.setAttribute('download', name);
-      exportBtn.href = img;
+    if(fileName != null && fileName != ""){
+      fileBtn.setAttribute('download', fileName);
+      fileBtn.href = img;
+      myModal.style.display = "none";
+    }
+  });
+
+  span.onClick.listen((_) {
+    myModal.style.display = "none";
+  });
+
+  window.onClick.listen((MouseEvent e) {
+    if (e.target == myModal) {
+        myModal.style.display = "none";
     }
   });
 }
