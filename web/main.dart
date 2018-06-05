@@ -7,7 +7,9 @@ import 'FlowchartRenderer.dart';
 import 'UseCaseParser.dart';
 import 'UseCaseDiagram.dart';
 import 'UseCaseListener.dart';
+import 'UseCaseRenderer.dart';
 import 'dart:async';
+import 'dart:js';
 
 main(){
   TextAreaElement txtArea = querySelector('#txtArea');
@@ -48,11 +50,18 @@ main(){
     g.fillRect(0, 0, 1920, 1080);
     g.setFillColorRgb(0, 0, 0);
     String str = txtArea.value;
-    if(str.startsWith("<flowchart")){
+    if(str.startsWith("<flowchart>")){
       FlowchartRenderer renderer = new FlowchartRenderer();
       renderer.render(g, objects);
+    } else if(str.startsWith("<usecase>")){
+      UseCaseRenderer renderer = new UseCaseRenderer();
+      renderer.render(g, objects);
     }
-    String img = myCanvas.toDataUrl('image/jpeg', 1);
-    exportBtn.href = img;
+    String img = myCanvas.toDataUrl('image/png', 1);
+    var name = context.callMethod('prompt', ['Enter file name: ', 'Untitled']);
+    if(name != null && name != ""){
+      exportBtn.setAttribute('download', name);
+      exportBtn.href = img;
+    }
   });
 }
