@@ -5,13 +5,21 @@
         <link rel="styleheet" href="main.css">
     </head>
     <style>
+        body {
+            margin: 0;
+        }
+        #wrap {
+            position: relative;
+        }
         .left {
             float: left;
             display: table-cell;
             vertical-align:middle;
         }
         .right {
-            width: 1000px;
+            position: absolute;
+            left: 616px;
+            width: 1300px;
             height: 904px;
             float: left;
             overflow: scroll;
@@ -30,26 +38,48 @@
         #txtArea:focus {
             outline: none;
         }
-        .button {
-            border-style: solid;
-            border-width : 1px 1px 1px 1px;
-            text-decoration : none;
-            padding : 4px;
-            border-color : #000000;
-            border-radius: 5px;
+        ul {
+            width: 1920px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #111;
+        }
+        #drawBtn {
+            margin-left: 5px;
+            margin-top: 2px;
         }
     </style>
     <body>
-        <div class="left">
-            <textarea id="txtArea" rows="45" cols="50"></textarea>
-            <div>
-                <input type="button" id="drawBtn" value="Draw">  
+        <ul>
+            <li><a href="#" class="button" id="exportBtn" download="my-file-name.png">Export</a></li>
+            <li><a href="#help">Help</a></li>
+        </ul>
+        <div id=wrap>
+            <div class="left">
+                <textarea id="txtArea" rows=45 cols="50"></textarea>
+                <div>
+                    <input type="button" id="drawBtn" value="Draw">  
+                </div>
+            </div>
+            <div class="right">
+                <canvas id="myCanvas" width="1920px" height="1080px"></canvas>
             </div>
         </div>
-        <div class="right">
-            <canvas id="myCanvas" width="1920px" height="1080px"></canvas>
-        </div>
-        <a href="#" class="button" id="exportBtn" download="my-file-name.png">Export</a>
 
         <script type="application/dart" src="main.dart"></script>
     </body>
