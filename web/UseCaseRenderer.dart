@@ -113,12 +113,14 @@ class UseCaseRenderer {
       for(int j = 1; j < sys.useCases.length; j++){
         if(sys.useCases[j].x < leftMostX.x){
           leftMostX = sys.useCases[j];
-        } else if(sys.useCases[j].x > rightMostX.x){
+        }
+        if(sys.useCases[j].x + sys.useCases[j].width > rightMostX.x + rightMostX.width){
           rightMostX = sys.useCases[j];
         }
         if(sys.useCases[j].y < topY.y){
           topY = sys.useCases[j];
-        } else if(sys.useCases[j].y > bottomY.y){
+        }
+        if(sys.useCases[j].y + sys.useCases[j].height > bottomY.y + bottomY.height){
           bottomY = sys.useCases[j];
         }
       }

@@ -29,7 +29,6 @@ main(){
     }
     var object = context.callMethod('getText');
     String str = object;
-    print(str);
     g.clearRect(0, 0, myCanvas.width, myCanvas.height);
     if(str.startsWith("<flowchart>")){
       FlowchartParser parser = new FlowchartParser();
@@ -58,26 +57,24 @@ main(){
   });
 
   fileBtn.onClick.listen((_) {
+    cropCanvas(myCanvas, objects);
     g.setFillColorRgb(255, 255, 255);
-    g.fillRect(0, 0, 1920, 1080);
+    g.fillRect(0, 0, myCanvas.width, myCanvas.height);
     g.setFillColorRgb(0, 0, 0);
     var object = context.callMethod('getText');
     String str = object;
-    if(str.startsWith("<flowchart>")){
-      FlowchartRenderer renderer = new FlowchartRenderer();
-      renderer.render(g, objects);
-    } else if(str.startsWith("<usecase>")){
-      UseCaseRenderer renderer = new UseCaseRenderer();
-      renderer.render(g, objects);
-    }
+    drawCanvas(str, g, objects);
 
     String fileName = fileText.value;
-    String img = myCanvas.toDataUrl('image/png', 1);
+    String img = myCanvas.toDataUrl();
     if(fileName != null && fileName != ""){
       fileBtn.setAttribute('download', fileName);
       fileBtn.href = img;
       myModal.style.display = "none";
     }
+    myCanvas.width = 1920;
+    myCanvas.height = 1080;
+    drawCanvas(str, g, objects);
   });
 
   span.onClick.listen((_) {
@@ -89,4 +86,54 @@ main(){
         myModal.style.display = "none";
     }
   });
+}
+
+void drawCanvas(String str, CanvasRenderingContext2D g, List<DiagramObject> objects){
+  if(str.startsWith("<flowchart>")){
+    FlowchartRenderer renderer = new FlowchartRenderer();
+    renderer.render(g, objects);
+  } else if(str.startsWith("<usecase>")){
+    UseCaseRenderer renderer = new UseCaseRenderer();
+    renderer.render(g, objects);
+  }
+}
+
+void cropCanvas(CanvasElement myCanvas, List<DiagramObject> objects){
+  int x = 100;
+  int y = 100;
+  int width = 100;
+  int height = 100;
+  if(objects.length > 0){
+    DiagramObject leftMostX = objects[0];
+    DiagramObject rightMostX = objects[0];
+    DiagramObject topY = objects[0];
+    DiagramObject bottomY = objects[0];
+
+    for(int j = 1; j < objects.length; j++){
+      if(objects[j].x < leftMostX.x){
+        leftMostX = objects[j];
+      }
+      if(objects[j].x + objects[j].width > rightMostX.x + rightMostX.width){
+        rightMostX = objects[j];
+      }
+      if(objects[j].y < topY.y){
+        topY = objects[j];
+      }
+      if(objects[j].y + objects[j].height > bottomY.y + bottomY.height){
+        bottomY = objects[j];
+      }
+    }
+    x = leftMostX.x - 50;
+    y = topY.y - 50;
+    width = rightMostX.x + rightMostX.width + 50 - x;
+    height = bottomY.y + bottomY.height + 50 - y;
+  }
+
+  for(int i = 0; i < objects.length; i++){
+    objects[i].x -= x;
+    objects[i].y -= y;
+  }
+
+  myCanvas.width = width;
+  myCanvas.height = height;
 }

@@ -12,8 +12,8 @@ class Flowchart {
   void render(CanvasRenderingContext2D g, List<DiagramObject> objects){
 
     double scale =  2.0 - (objects.length / 10);
-    if(scale < 1.5){
-      scale = 1.5;
+    if(scale < 1.3){
+      scale = 1.3;
     }
     g.font = (8 * scale).toString() + "px Arial";
 
@@ -98,7 +98,7 @@ class Flowchart {
       if(objects[j].x != null && objects[j].y != null){
         Rectangle r = new Rectangle(objects[j].x, objects[j].y, objects[j].width, objects[j].height);
         Rectangle s = new Rectangle(x, y, width, height);
-        if(r.intersects(s) || (x > 800 || x < 0 || y > 600 || y < 0)){
+        if(r.intersects(s) || (x > 1800 || x < 0 || y > 1000 || y < 0)){
           return false;
         }
       }

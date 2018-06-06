@@ -62,12 +62,12 @@ body {
     height: 900px;
     float: left;
     overflow: scroll;
-    border:2px solid #808080;
+    border:2px solid #333;
 }
 .outer {
     overflow-y: scroll;
     max-height: 900px;
-    border:2px solid #808080;
+    border:2px solid #333;
 }
 .inner {
     width: 552px;
@@ -88,6 +88,7 @@ body {
     outline: none;
 }
 ul {
+    font-family: "Arial";
     width: 1920px;
     list-style-type: none;
     margin: 0;

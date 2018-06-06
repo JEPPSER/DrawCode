@@ -1,6 +1,5 @@
 import 'DiagramObject.dart';
 import 'UseCase.dart';
-import 'dart:math';
 
 class System extends DiagramObject {  
   String text;
