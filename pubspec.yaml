@@ -1,3 +1,6 @@
 name: DrawCode
+dependencies:
+  js:
+    hosted: js
 environment:
   sdk: any

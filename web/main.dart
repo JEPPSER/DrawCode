@@ -9,9 +9,9 @@ import 'UseCaseDiagram.dart';
 import 'UseCaseListener.dart';
 import 'UseCaseRenderer.dart';
 import 'dart:async';
+import 'dart:js';
 
 main(){
-  TextAreaElement txtArea = querySelector('#txtArea');
   ButtonInputElement drawBtn = querySelector('#drawBtn');
   TextInputElement fileText= querySelector('#fileText');
   var fileBtn = querySelector('#fileBtn');
@@ -27,7 +27,9 @@ main(){
     for(int i = 0; i < subs.length; i++){
       subs[i].cancel();
     }
-    String str = txtArea.value;
+    var object = context.callMethod('getText');
+    String str = object;
+    print(str);
     g.clearRect(0, 0, myCanvas.width, myCanvas.height);
     if(str.startsWith("<flowchart>")){
       FlowchartParser parser = new FlowchartParser();
@@ -59,7 +61,8 @@ main(){
     g.setFillColorRgb(255, 255, 255);
     g.fillRect(0, 0, 1920, 1080);
     g.setFillColorRgb(0, 0, 0);
-    String str = txtArea.value;
+    var object = context.callMethod('getText');
+    String str = object;
     if(str.startsWith("<flowchart>")){
       FlowchartRenderer renderer = new FlowchartRenderer();
       renderer.render(g, objects);
