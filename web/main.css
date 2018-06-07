@@ -74,7 +74,7 @@ body {
     height: 100%;
     min-height: 900px;
     resize: none;
-    font-family: "Courier New";
+    font-family: "Lucida Console";
     font-size: 18px;
     background: url(https://i.imgur.com/Lx08nGL.png);
     background-attachment: local;
@@ -88,7 +88,7 @@ body {
     outline: none;
 }
 ul {
-    font-family: "Arial";
+    font-family: "Arial Black";
     width: 1920px;
     list-style-type: none;
     margin: 0;
@@ -147,9 +147,18 @@ li a:hover {
     cursor: pointer;
 }
 
+#fileText {
+    font-family: "Arial";
+    font-size: 15px;
+}
+
 #fileBtn {
-    width: 50px;
-    height: 20px;
+    font-family: "Arial";
+    font-size: 15px;
+    position: relative;
+    line-height: 25px;
+    width: 75px;
+    height: 25px;
     cursor: pointer;
     -webkit-appearance: button;
     -moz-appearance: button;

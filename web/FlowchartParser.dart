@@ -2,6 +2,7 @@ import 'DiagramObject.dart';
 import 'If.dart';
 import 'Square.dart';
 import 'Text.dart';
+import 'Arrow.dart';
 
 class FlowchartParser {
 
@@ -59,9 +60,11 @@ class FlowchartParser {
       }
     }
     if(a != -1 && b != -1){
-      if(list[a] is Square){
+      if(list[a] is Square && list[b] is If || list[a] is Square && list[b] is Square){
         Square s = list[a];
-        s.connections.add(list[b]);
+        Arrow arrow = new Arrow();
+        arrow.connection = list[b];
+        s.connections.add(arrow);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
       }
@@ -116,7 +119,9 @@ class FlowchartParser {
       for(int i = 0; i < list.length; i++){
         if(list[i].name == parts[1]){
           If ifs = list[index];
-          ifs.yes = list[i];
+          Arrow arrow = new Arrow();
+          arrow.connection = list[i];
+          ifs.yes = arrow;
           break;
         }
       }
@@ -124,7 +129,9 @@ class FlowchartParser {
       for(int i = 0; i < list.length; i++){
         if(list[i].name == parts[1]){
           If ifs = list[index];
-          ifs.no = list[i];
+          Arrow arrow = new Arrow();
+          arrow.connection = list[i];
+          ifs.no = arrow;
           break;
         }
       }

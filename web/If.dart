@@ -1,9 +1,10 @@
 import 'DiagramObject.dart';
+import 'Arrow.dart';
 
 class If extends DiagramObject {
   String text;
-  DiagramObject yes;
-  DiagramObject no;
+  Arrow yes;
+  Arrow no;
 
   If(){
     width = 60;

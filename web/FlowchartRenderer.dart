@@ -11,8 +11,8 @@ class FlowchartRenderer {
 
   void render(CanvasRenderingContext2D g, List<DiagramObject> objects){
     double scale =  2.0 - (objects.length / 10);
-    if(scale < 1.3){
-      scale = 1.3;
+    if(scale < 1.4){
+      scale = 1.4;
     }
 
     g.font = (8 * scale).toString() + "px Arial";
@@ -23,17 +23,17 @@ class FlowchartRenderer {
       if(objects[i] is Square){
         Square s = objects[i];
         for(int j = 0; j < s.connections.length; j++){
-          List<Point> points = getPoints(s, s.connections[j]);
+          List<Point> points = getPoints(s, s.connections[j].connection);
           drawArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
         }
       } else if(objects[i] is If){
         If f = objects[i];
         List<DiagramObject> yesno = new List<DiagramObject>();
         if(f.yes != null){
-          yesno.add(f.yes);
+          yesno.add(f.yes.connection);
         }
         if(f.no != null){
-          yesno.add(f.no);
+          yesno.add(f.no.connection);
         }
         for(int j = 0; j < yesno.length; j++){
           List<Point> points = getPoints(f, yesno[j]);
