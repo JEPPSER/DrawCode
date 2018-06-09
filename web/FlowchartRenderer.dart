@@ -1,6 +1,7 @@
 import 'DiagramObject.dart';
 import 'Square.dart';
 import 'If.dart';
+import 'Arrow.dart';
 import 'dart:html';
 import 'dart:math';
 
@@ -23,21 +24,27 @@ class FlowchartRenderer {
       if(objects[i] is Square){
         Square s = objects[i];
         for(int j = 0; j < s.connections.length; j++){
-          List<Point> points = getPoints(s, s.connections[j].connection);
-          drawArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
+          List<Point> points = getPoints(s, s.connections[j].to);
+          s.connections[j].points.clear();
+          s.connections[j].points.add(points[0]);
+          s.connections[j].points.add(points[1]);
+          drawArrow(g, s.connections[j]);
         }
       } else if(objects[i] is If){
         If f = objects[i];
-        List<DiagramObject> yesno = new List<DiagramObject>();
+        List<Arrow> yesno = new List<Arrow>();
         if(f.yes != null){
-          yesno.add(f.yes.connection);
+          yesno.add(f.yes);
         }
         if(f.no != null){
-          yesno.add(f.no.connection);
+          yesno.add(f.no);
         }
         for(int j = 0; j < yesno.length; j++){
-          List<Point> points = getPoints(f, yesno[j]);
-          drawArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
+          List<Point> points = getPoints(f, yesno[j].to);
+          yesno[j].points.clear();
+          yesno[j].points.add(points[0]);
+          yesno[j].points.add(points[1]);
+          drawArrow(g, yesno[j]);
           if(j == 0){
             g.fillText("yes", points[2].x, points[2].y);
           } else if(j == 1){
@@ -83,14 +90,19 @@ class FlowchartRenderer {
     }
   }
 
-  void drawArrow(CanvasRenderingContext2D g, int fromX, int fromY, int toX, int toY){
+  void drawArrow(CanvasRenderingContext2D g, Arrow arrow){
     int headlen = 15;
-    double angle = atan2(toY  - fromY, toX - fromX);
-    g.moveTo(fromX, fromY);
-    g.lineTo(toX, toY);
-    g.lineTo(toX-headlen*cos(angle-PI/6), toY-headlen*sin(angle-PI/6));
-    g.moveTo(toX, toY);
-    g.lineTo(toX-headlen*cos(angle+PI/6), toY-headlen*sin(angle+PI/6));
+    Point to = arrow.points[arrow.points.length - 1];
+    Point from = arrow.points[arrow.points.length - 2];
+    double angle = atan2(to.y  - from.y, to.x - from.x);
+    g.moveTo(arrow.points[0].x, arrow.points[0].y);
+    for(int i = 1; i < arrow.points.length; i++){
+      g.lineTo(arrow.points[i].x, arrow.points[i].y);
+    }
+    g.lineTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
+    g.moveTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
   }
 
   List<Point> getPoints(DiagramObject from, DiagramObject to){

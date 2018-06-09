@@ -37,26 +37,26 @@ class Flowchart {
       s.width = (s.width*scale).floor();
       s.height = (s.height*scale).floor();
       for(int i = 0; i < s.connections.length; i++){
-        if(!doneObjects.contains(s.connections[i].connection)){
+        if(!doneObjects.contains(s.connections[i].to)){
 
           // Set x and y.
           if(isFree(s.x + s.width * 2, s.y, s.width, s.height, objects)){
-            s.connections[i].connection.x = s.x + (s.width * 2).floor();
-            s.connections[i].connection.y = s.y;
+            s.connections[i].to.x = s.x + (s.width * 2).floor();
+            s.connections[i].to.y = s.y;
           } else if(isFree(s.x, s.y + s.height * 2, s.width, s.height, objects)){
-            s.connections[i].connection.x = s.x + (s.width / 2).floor() - (s.connections[i].connection.width * scale / 2).floor();
-            s.connections[i].connection.y = s.y + s.height * 2;
+            s.connections[i].to.x = s.x + (s.width / 2).floor() - (s.connections[i].to.width * scale / 2).floor();
+            s.connections[i].to.y = s.y + s.height * 2;
           } else if(isFree(s.x, s.y - s.height * 2, s.width, s.height, objects)){
-            s.connections[i].connection.x = s.x + (s.width / 2).floor() - (s.connections[i].connection.width * scale / 2).floor();
-            s.connections[i].connection.y = s.y - s.height * 2;
+            s.connections[i].to.x = s.x + (s.width / 2).floor() - (s.connections[i].to.width * scale / 2).floor();
+            s.connections[i].to.y = s.y - s.height * 2;
           } else {
             Random rand = new Random();
-            s.connections[i].connection.x = rand.nextInt(800);
-            s.connections[i].connection.y = rand.nextInt(600);
+            s.connections[i].to.x = rand.nextInt(800);
+            s.connections[i].to.y = rand.nextInt(600);
           }
 
-          doneObjects.add(s.connections[i].connection);
-          placeConnections(s.connections[i].connection, objects, scale);
+          doneObjects.add(s.connections[i].to);
+          placeConnections(s.connections[i].to, objects, scale);
         }
       }
     } else if(o is If){
@@ -71,24 +71,24 @@ class Flowchart {
         yesno.add(f.no);
       }  
       for(int i = 0; i < yesno.length; i++){
-        if(!doneObjects.contains(yesno[i].connection)){
+        if(!doneObjects.contains(yesno[i].to)){
           if(isFree(f.x + f.width * 2, f.y, f.width, f.height, objects)){
-            yesno[i].connection.x = f.x + (f.width * 2.5).floor();
-            yesno[i].connection.y = f.y;
+            yesno[i].to.x = f.x + (f.width * 2.5).floor();
+            yesno[i].to.y = f.y;
           } else if(isFree(f.x, f.y + f.height * 2, f.width, f.height, objects)){
-            yesno[i].connection.x = f.x + (f.width / 2).floor() - (yesno[i].connection.width * scale / 2).floor();
-            yesno[i].connection.y = f.y + f.height * 2;
+            yesno[i].to.x = f.x + (f.width / 2).floor() - (yesno[i].to.width * scale / 2).floor();
+            yesno[i].to.y = f.y + f.height * 2;
           } else if(isFree(f.x, f.y - f.height * 2, f.width, f.height, objects)){
-            yesno[i].connection.x = f.x + (f.width / 2).floor() - (yesno[i].connection.width * scale / 2).floor();
-            yesno[i].connection.y = f.y - f.height * 2;
+            yesno[i].to.x = f.x + (f.width / 2).floor() - (yesno[i].to.width * scale / 2).floor();
+            yesno[i].to.y = f.y - f.height * 2;
           } else {
             Random rand = new Random();
-            yesno[i].connection.x = rand.nextInt(800);
-            yesno[i].connection.y = rand.nextInt(600);
+            yesno[i].to.x = rand.nextInt(800);
+            yesno[i].to.y = rand.nextInt(600);
           }
 
-          doneObjects.add(yesno[i].connection);
-          placeConnections(yesno[i].connection, objects, scale);
+          doneObjects.add(yesno[i].to);
+          placeConnections(yesno[i].to, objects, scale);
         }
       }
     }

@@ -4,5 +4,6 @@ import 'dart:math';
 class Arrow {
 
   List<Point> points = new List<Point>();
-  DiagramObject connection;
+  DiagramObject from;
+  DiagramObject to;
 }

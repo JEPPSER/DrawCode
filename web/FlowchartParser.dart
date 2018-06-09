@@ -63,7 +63,8 @@ class FlowchartParser {
       if(list[a] is Square && list[b] is If || list[a] is Square && list[b] is Square){
         Square s = list[a];
         Arrow arrow = new Arrow();
-        arrow.connection = list[b];
+        arrow.from = s;
+        arrow.to = list[b];
         s.connections.add(arrow);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
@@ -120,7 +121,8 @@ class FlowchartParser {
         if(list[i].name == parts[1]){
           If ifs = list[index];
           Arrow arrow = new Arrow();
-          arrow.connection = list[i];
+          arrow.from = ifs;
+          arrow.to = list[i];
           ifs.yes = arrow;
           break;
         }
@@ -130,7 +132,8 @@ class FlowchartParser {
         if(list[i].name == parts[1]){
           If ifs = list[index];
           Arrow arrow = new Arrow();
-          arrow.connection = list[i];
+          arrow.from = ifs;
+          arrow.to = list[i];
           ifs.no = arrow;
           break;
         }
