@@ -25,9 +25,11 @@ class FlowchartRenderer {
         Square s = objects[i];
         for(int j = 0; j < s.connections.length; j++){
           List<Point> points = getPoints(s, s.connections[j].to);
-          s.connections[j].points.clear();
-          s.connections[j].points.add(points[0]);
-          s.connections[j].points.add(points[1]);
+          if(s.connections[j].points.length <= 2){
+            s.connections[j].points.clear();
+            s.connections[j].points.add(points[0]);
+            s.connections[j].points.add(points[1]);
+          }
           drawArrow(g, s.connections[j]);
         }
       } else if(objects[i] is If){
@@ -41,15 +43,22 @@ class FlowchartRenderer {
         }
         for(int j = 0; j < yesno.length; j++){
           List<Point> points = getPoints(f, yesno[j].to);
-          yesno[j].points.clear();
-          yesno[j].points.add(points[0]);
-          yesno[j].points.add(points[1]);
-          drawArrow(g, yesno[j]);
-          if(j == 0){
-            g.fillText("yes", points[2].x, points[2].y);
-          } else if(j == 1){
-            g.fillText("no", points[2].x, points[2].y);
+          if(yesno[j].points.length <= 2){
+            yesno[j].points.clear();
+            yesno[j].points.add(points[0]);
+            yesno[j].points.add(points[1]);
+            if(j == 0){
+              f.yesPoint = points[2];
+            } else if(j == 1){
+              f.noPoint = points[2];
+            }
           }
+          if(j == 0){
+            g.fillText("yes", f.yesPoint.x, f.yesPoint.y);
+          } else if(j == 1){
+            g.fillText("no", f.noPoint.x, f.noPoint.y);
+          }
+          drawArrow(g, yesno[j]);
         }
       }
     }
