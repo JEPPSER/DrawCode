@@ -16,6 +16,7 @@ class FlowchartListener {
   DiagramObject currentObject;
   Arrow currentArrow;
   int arrowPointIndex = 0;
+  bool isOnPoint = false;
   List<StreamSubscription> subs;
   FlowchartRenderer renderer;
 
@@ -33,7 +34,11 @@ class FlowchartListener {
     StreamSubscription s1 = canvas.onMouseDown.listen((MouseEvent me) {
       Point mousePos = getMousePosition(me);
       if(currentArrow != null && !isDown){
-        addAt(currentArrow.points, mousePos, arrowPointIndex);
+        if(!isOnPoint){
+          addAt(currentArrow.points, mousePos, arrowPointIndex);
+        } else {
+          currentArrow.points[arrowPointIndex] = mousePos;
+        }  
       } else {
         for(int i = 0; i < objects.length; i++){
           Rectangle r = new Rectangle(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
@@ -48,7 +53,7 @@ class FlowchartListener {
 
     StreamSubscription s2 = canvas.onMouseMove.listen((MouseEvent me){
       Point mousePos = getMousePosition(me);
-      if(!isDown) {
+      if(!isDown) { // Just hovering
         g.clearRect(0, 0, canvas.width, canvas.height);
         renderer.render(g, objects);
         outerloop:
@@ -57,21 +62,30 @@ class FlowchartListener {
             Square s = objects[i];
             for(int j = 0; j < s.connections.length; j++){
               Arrow arrow = s.connections[j];
-              for(int k = 1; k < arrow.points.length; k++){
-                Point a = arrow.points[k - 1];
-                Point b = arrow.points[k];
-                double v = PI / 2 - (getAngle(a, b) - getAngle(mousePos, b));
-                double length = cos(v) * mousePos.distanceTo(b);
-                int margin = 10;
-                if(length < margin && length > -margin && isWithinPoints(a, b, mousePos, margin)){
-                  drawGreenCircle(g, mousePos.x, mousePos.y);
+              for(int k = 0; k < arrow.points.length; k++){
+                if(mousePos.distanceTo(arrow.points[k]) < 15){
+                  drawRedCircle(g, arrow.points[k].x, arrow.points[k].y);
                   currentArrow = arrow;
                   arrowPointIndex = k;
+                  isOnPoint = true;
                   break outerloop;
-                } else {
-                  currentArrow = null;
-                  arrowPointIndex = 0;
-                }
+                } else if(k > 0){
+                  isOnPoint = false;
+                  Point a = arrow.points[k - 1];
+                  Point b = arrow.points[k];
+                  double v = PI / 2 - (getAngle(a, b) - getAngle(mousePos, b));
+                  double length = cos(v) * mousePos.distanceTo(b);
+                  int margin = 10;
+                  if(length < margin && length > -margin && isWithinPoints(a, b, mousePos, margin)){
+                    drawGreenCircle(g, mousePos.x, mousePos.y);
+                    currentArrow = arrow;
+                    arrowPointIndex = k;
+                    break outerloop;
+                  } else {
+                    currentArrow = null;
+                    arrowPointIndex = 0;
+                  }
+                }  
               }
             }
           } else if(objects[i] is If){
@@ -85,26 +99,35 @@ class FlowchartListener {
             }
             for(int j = 0; j < connections.length; j++){
               Arrow arrow = connections[j];
-              for(int k = 1; k < arrow.points.length; k++){
-                Point a = arrow.points[k - 1];
-                Point b = arrow.points[k];
-                double v = PI / 2 - (getAngle(a, b) - getAngle(mousePos, b));
-                double length = cos(v) * mousePos.distanceTo(b);
-                int margin = 10;
-                if(length < margin && length > -margin && isWithinPoints(a, b, mousePos, margin)){
-                  drawGreenCircle(g, mousePos.x, mousePos.y);
+              for(int k = 0; k < arrow.points.length; k++){
+                if(mousePos.distanceTo(arrow.points[k]) < 15){
+                  drawRedCircle(g, arrow.points[k].x, arrow.points[k].y);
                   currentArrow = arrow;
                   arrowPointIndex = k;
+                  isOnPoint = true;
                   break outerloop;
-                } else {
-                  currentArrow = null;
-                  arrowPointIndex = 0;
+                } else if(k > 0){
+                  isOnPoint = false;
+                  Point a = arrow.points[k - 1];
+                  Point b = arrow.points[k];
+                  double v = PI / 2 - (getAngle(a, b) - getAngle(mousePos, b));
+                  double length = cos(v) * mousePos.distanceTo(b);
+                  int margin = 10;
+                  if(length < margin && length > -margin && isWithinPoints(a, b, mousePos, margin)){
+                    drawGreenCircle(g, mousePos.x, mousePos.y);
+                    currentArrow = arrow;
+                    arrowPointIndex = k;
+                    break outerloop;
+                  } else {
+                    currentArrow = null;
+                    arrowPointIndex = 0;
+                  }
                 }
               }
             }
           }
         }
-      } else if(isDown && currentObject != null){
+      } else if(isDown && currentObject != null){ // Holding on an object
         currentObject.x += mousePos.x - startPoint.x;
         currentObject.y += mousePos.y - startPoint.y;
         if(currentObject is If){
@@ -156,11 +179,10 @@ class FlowchartListener {
             }      
           }  
         }
-
         g.clearRect(0, 0, canvas.width, canvas.height);
         renderer.render(g, objects);
         startPoint = mousePos;
-      } else if(isDown && currentArrow != null){
+      } else if(isDown && currentArrow != null){ // Holding on an arrow
         currentArrow.points[arrowPointIndex] = getMousePosition(me);
         g.clearRect(0, 0, canvas.width, canvas.height);
         renderer.render(g, objects);
@@ -181,6 +203,15 @@ class FlowchartListener {
     g.beginPath();
     g.setFillColorRgb(0, 255, 0, 0.5);
     g.arc(x, y, 10, 0, PI * 2);
+    g.fill();
+    g.closePath();
+    g.setFillColorRgb(0, 0, 0);
+  }
+
+  drawRedCircle(CanvasRenderingContext2D g, int x, int y){
+    g.beginPath();
+    g.setFillColorRgb(255, 0, 0, 0.5);
+    g.arc(x, y, 15, 0, PI * 2);
     g.fill();
     g.closePath();
     g.setFillColorRgb(0, 0, 0);
