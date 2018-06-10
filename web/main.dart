@@ -23,6 +23,10 @@ main(){
   List<DiagramObject> objects;
   List<StreamSubscription> subs = new List<StreamSubscription>();
 
+  myCanvas.onContextMenu.listen((e) {
+    e.preventDefault();
+  });
+
   drawBtn.onClick.listen((_) {
     for(int i = 0; i < subs.length; i++){
       subs[i].cancel();

@@ -36,11 +36,13 @@ class FlowchartListener {
     StreamSubscription s1 = canvas.onMouseDown.listen((MouseEvent me) {
       Point mousePos = getMousePosition(me);
       if(currentArrow != null && !isDown){
-        if(!isOnPoint){
+        if(!isOnPoint && me.button == 0){
           addAt(currentArrow.points, mousePos, arrowPointIndex);
-        } else {
-          currentArrow.points[arrowPointIndex] = mousePos;
-        }  
+        } else if(isOnPoint && me.button == 2){
+          currentArrow.points.removeAt(arrowPointIndex);
+          g.clearRect(0, 0, canvas.width, canvas.height);
+          renderer.render(g, objects);
+        }
       } else {
         for(int i = 0; i < objects.length; i++){
           Rectangle r = new Rectangle(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
@@ -207,9 +209,11 @@ class FlowchartListener {
         renderer.render(g, objects);
         startPoint = mousePos;
       } else if(isDown && currentArrow != null){ // Holding on an arrow
-        currentArrow.points[arrowPointIndex] = getMousePosition(me);
-        g.clearRect(0, 0, canvas.width, canvas.height);
-        renderer.render(g, objects);
+        if(me.button == 0){
+          currentArrow.points[arrowPointIndex] = getMousePosition(me);
+          g.clearRect(0, 0, canvas.width, canvas.height);
+          renderer.render(g, objects);
+        }
       }
     });
 
