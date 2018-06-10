@@ -8,6 +8,7 @@ import 'UseCaseParser.dart';
 import 'UseCaseDiagram.dart';
 import 'UseCaseListener.dart';
 import 'UseCaseRenderer.dart';
+import 'ExampleLoader.dart';
 import 'dart:async';
 import 'dart:js';
 
@@ -20,8 +21,24 @@ main(){
   var span = document.getElementsByClassName("close")[0];
   CanvasElement myCanvas = querySelector('#myCanvas');
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
+  var flowchartEx = querySelector('#flowchartEx');
+  var usecaseEx = querySelector('#usecaseEx');
+
   List<DiagramObject> objects;
   List<StreamSubscription> subs = new List<StreamSubscription>();
+  ExampleLoader exLoader = new ExampleLoader();
+
+  flowchartEx.onClick.listen((_) {
+    String str = exLoader.getFlowchartExample();
+    context.callMethod('setText', [str]);
+    drawBtn.click();
+  });
+
+  usecaseEx.onClick.listen((_) {
+    String str = exLoader.getUseCaseExample();
+    context.callMethod('setText', [str]);
+    drawBtn.click();
+  });
 
   myCanvas.onContextMenu.listen((e) {
     e.preventDefault();
