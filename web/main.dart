@@ -9,6 +9,9 @@ import 'UseCaseDiagram.dart';
 import 'UseCaseListener.dart';
 import 'UseCaseRenderer.dart';
 import 'ExampleLoader.dart';
+import 'If.dart';
+import 'Arrow.dart';
+import 'Square.dart';
 import 'dart:async';
 import 'dart:js';
 
@@ -153,6 +156,29 @@ void cropCanvas(CanvasElement myCanvas, List<DiagramObject> objects){
   for(int i = 0; i < objects.length; i++){
     objects[i].x -= x;
     objects[i].y -= y;
+    if(objects[i] is If){
+      If f = objects[i];
+      if(f.yes != null){
+        for(int j = 0; j < f.yes.points.length; j++){
+          f.yes.points[j] = new Point(f.yes.points[j].x - x, f.yes.points[j].y - y);
+        }
+        f.yesPoint = new Point(f.yesPoint.x - x, f.yesPoint.y - y);
+      }
+      if(f.no != null){
+        for(int j = 0; j < f.no.points.length; j++){
+          f.no.points[j] = new Point(f.no.points[j].x - x, f.no.points[j].y - y);
+        }
+        f.noPoint = new Point(f.noPoint.x - x, f.noPoint.y - y);
+      }
+    } else if(objects[i] is Square){
+      Square s = objects[i];
+      for(int j = 0; j < s.connections.length; j++){
+        Arrow a = s.connections[j];
+        for(int k = 0; k < a.points.length; k++){
+          a.points[k] = new Point(a.points[k].x - x, a.points[k].y - y);
+        }
+      }
+    }
   }
 
   myCanvas.width = width;
