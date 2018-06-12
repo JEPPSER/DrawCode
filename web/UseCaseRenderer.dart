@@ -100,7 +100,7 @@ class UseCaseRenderer {
 
   List<Point> getUseCasePoints(UseCase from, UseCase to){
     List<Point> points = new List<Point>();
-    double angle = atan2(to.y - from.y, to.x - from.x);
+    double angle = atan2((to.y + to.height / 2) - (from.y + from.height / 2), (to.x + to.width / 2) - (from.x + from.width / 2));
     if(angle < 0){
       angle += 2*PI;
     }

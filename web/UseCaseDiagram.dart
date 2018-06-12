@@ -1,6 +1,5 @@
 import 'DiagramObject.dart';
 import 'UseCaseRenderer.dart';
-import 'System.dart';
 import 'UseCase.dart';
 import 'Actor.dart';
 import 'dart:html';
@@ -38,7 +37,17 @@ class UseCaseDiagram {
           doneObjects.add(a);
         } else if(objects[i] is UseCase){
           UseCase uc = objects[i];
-          if(uc.extensions.length == 0 && uc.inclusions.length == 0){
+          bool hasActor = false;
+          for(int j = 0; j < objects.length; j++){
+            if(objects[j] is Actor){
+              Actor act = objects[j];
+              if(act.connections.contains(uc)){
+                hasActor = true;
+                break;
+              }
+            }
+          }
+          if(hasActor){
             uc.x = 100 + uc.width * 2;
             uc.y = 300 + uCounter1 * (uc.height + 20);
             if(uc.y > 650){
