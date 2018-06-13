@@ -20,8 +20,11 @@ main(){
   TextInputElement fileText= querySelector('#fileText');
   var fileBtn = querySelector('#fileBtn');
   var exportBtn = querySelector('#exportBtn');
+  var helpBtn = querySelector('#helpBtn');
   var myModal = querySelector('#myModal');
-  var span = document.getElementsByClassName("close")[0];
+  var helpWindow = querySelector('#helpWindow');
+  var closeExport = document.getElementsByClassName("closeExport")[0];
+  var closeHelp = document.getElementsByClassName("closeHelp")[0];
   CanvasElement myCanvas = querySelector('#myCanvas');
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
   var flowchartEx = querySelector('#flowchartEx');
@@ -80,6 +83,10 @@ main(){
     fileBtn.attributes.remove('href');
   });
 
+  helpBtn.onClick.listen((_) {
+    helpWindow.style.display = "block";
+  });
+
   fileBtn.onClick.listen((_) {
     cropCanvas(myCanvas, objects);
     g.setFillColorRgb(255, 255, 255);
@@ -101,13 +108,20 @@ main(){
     drawCanvas(str, g, objects);
   });
 
-  span.onClick.listen((_) {
+  closeExport.onClick.listen((_) {
     myModal.style.display = "none";
+  });
+
+  closeHelp.onClick.listen((_) {
+    helpWindow.style.display = "none";
   });
 
   window.onClick.listen((MouseEvent e) {
     if (e.target == myModal) {
-        myModal.style.display = "none";
+      myModal.style.display = "none";
+    }
+    if(e.target == helpWindow){
+      helpWindow.style.display = "none";
     }
   });
 }

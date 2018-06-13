@@ -112,15 +112,37 @@ body {
     border: 1px solid #888;
     width: 300px;
 }
-.close {
+.help-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 800px;
+    height: 600px;
+}
+.closeExport {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.closeExport:hover,
+.closeExport:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.closeHelp {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeHelp:hover,
+.closeHelp:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;

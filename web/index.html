@@ -9,12 +9,17 @@
     <body>
         <div id="myModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="closeExport">&times;</span>
                 <p style="font-family:Arial; font-size:15px;">File name: </p>
                 <input type="text" id="fileText">
                 <a href="#" class="button" id="fileBtn">Download</a></li>
             </div>
-        </div>    
+        </div>
+        <div id="helpWindow" class="modal">
+            <div class="help-content">
+                <span class="closeHelp">&times;</span>
+            </div>
+        </div> 
         <div class="navbar">
             <a href="#export" class="button" id="exportBtn">Export</a></li>
             <div class="dropdown">
@@ -26,7 +31,7 @@
                   <a href="#" id="usecaseEx">Use Case Diagram</a>
                 </div>
             </div>
-            <a href="#help">Help</a></li>
+            <a href="#help" id="helpBtn">Help</a></li>
         </div>
         <div id=wrap>
             <div class="left">
