@@ -9,7 +9,6 @@
     <body>
         <div id="myModal" class="modal">
             <div class="modal-content">
-                <span class="closeExport">&times;</span>
                 <p style="font-family:Arial; font-size:15px;">File name: </p>
                 <input type="text" id="fileText">
                 <a href="#" class="button" id="fileBtn">Download</a></li>
@@ -17,7 +16,130 @@
         </div>
         <div id="helpWindow" class="modal">
             <div class="help-content">
-                <span class="closeHelp">&times;</span>
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'Flowchart')">Flowchart</button>
+                    <button class="tablinks" onclick="openTab(event, 'Usecase')">Use Case Diagram</button>
+                </div>
+                <div id="Flowchart" class="tabcontent">
+                    <h3>Specify the type of diagram</h3>
+                    <p>The type of diagram you want to make has to be specified at the very first line.
+                    To specify that you want to make a flowchart, write &#60flowchart&#62 in the first line.
+                    Load the "Flowchart" example from the menu bar for reference.</p>
+                    <h3>Add an object to the diagram</h3>
+                    <p>There are a number of different objects that can be added to a flowchart:<br>
+                    Step, If, IOBox, Document, Start and End.<br>
+                    You can explore what the different objects look like by loading the "Flowchart" example.<br>
+                    An object is initialized by typing the name of the object followed by a space and a variable name.<br>
+                    (Variable names can be of any length.)<br>
+                    <br>
+                    Example:<br>
+                    Step a<br>
+                    Document b<br>
+                    <br>
+                    An object will only appear if it is connected to another object by an arrow.<br>
+                    (note: Each command must be separated by a new line)</p>
+                    <h3>Draw arrows between objects</h3>
+                    <p>To draw an arrow between two objects, two objects must have been initialized.<br>
+                    The operator for the arrow is [variable]->[variable]<br>
+                    <br>
+                    Example:<br>
+                    Step a<br>
+                    IOBox b<br>
+                    a->b<br>
+                    <br>
+                    "If" objects can only have one arrow for "yes" and one arrow for "no".<br>
+                    The arrow operator for If is therefore different from all the other objects.<br>
+                    The operator for If is [variable].yes=[variable] and [variable].no=[variable]</p>
+                    <h3>Set the text displayed in an object</h3>
+                    <p>Every object in a flowchart can display some text. The operator is [variable].text="some text"<br>
+                    <br>
+                    Example:<br>
+                    Step a<br>
+                    a.text="Plug in lamp"<br>
+                    If b<br>
+                    b.text="Does lamp work?"</p>
+                    <h3>Object placement</h3>
+                    <p>When clicking the "Draw" button, an algorithm will place the different objects in the flowchart<br>
+                    as well as it can. In most cases smaller flowcharts will look good and well distributed but sometimes<br>
+                    you might want to change the placements on your own. This is simply done by dragging and dropping<br>
+                    objects with the cursor. You can also change the appearance of the arrows by clicking them and creating<br>
+                    new points. The arrow will then be drawn from point to point and create a path. These points can also be<br>
+                    moved by dragging and dropping. To delete a point, simply right click on it.<br>
+                    <br>
+                    To test changing object placement, simply load the "Flowchart" example from
+                    the menu bar and try changing the appearance of the flowchart in as many ways as you can.</p>
+                </div>
+                <div id="Usecase" class="tabcontent">
+                    <h3>Specify the type of diagram</h3>
+                    <p>The type of diagram you want to make has to be specified at the very first line.
+                    To specify that you want to make a use case diagram, write &#60usecase&#62 in the first line.
+                    Load the "Use Case Diagram" example from the menu bar for reference.</p>
+                    <h3>Add an object to the diagram</h3>
+                    <p>There are three different objects that can be added to a use case diagram:
+                    Actor, UseCase and System.<br>
+                    You can explore what the different objects look like by loading the "Use Case Diagram" example.<br>
+                    An object is initialized by typing the name of the object followed by a space and a variable name.<br>
+                    (Variable names can be of any length.)<br>
+                    <br>
+                    Example:<br>
+                    Actor a<br>
+                    UseCase b<br>
+                    System sys<br>
+                    <br>
+                    (note: Each command must be separated by a new line)</p>
+                    <h3>Set the text displayed in an object</h3>
+                    <p>Every object in a use case diagram can display some text. The operator is [variable].text="some text"<br>
+                    <br>
+                    Example:<br>
+                    Actor a<br>
+                    a.text="User"<br>
+                    UseCase b<br>
+                    b.text="Check in"</p>
+                    <h3>Add UseCases to System</h3>
+                    <p>A system is displayed as a square. The size and position of this square depends only on the placement
+                    of the use cases that it contains. The system will encapsulate all the use cases that it contains.<br>
+                    The operator for adding a UseCase to a System is [variable] add [variable] where the first variable is
+                    of type System and the second variable is of type UseCase.<br>
+                    <br>
+                    Example:<br>
+                    System sys<br>
+                    UseCase u<br>
+                    sys add u</p>
+                    <h3>Draw line between Actor and UseCase</h3>
+                    <p>The operator for drawing a line between an Actor and a UseCase is [variable]->[variable] where
+                    the first variable is of type Actor and the second variable is of type UseCase.<br>
+                    <br>
+                    Example:<br>
+                    Actor a<br>
+                    UseCase b<br>
+                    a->b</p>
+                    <h3>Draw extend and include arrows between UseCases</h3>
+                    <p>The operators for drawing include/extend arrows between two usecases are [variable] includes [variable]<br>
+                    and [variable] extends [variable] where both variables are of type UseCase.<br>
+                    <br>
+                    Example:<br>
+                    UseCase a<br>
+                    UseCase b<br>
+                    UseCase c<br>
+                    a includes b<br>
+                    b extends c</p>
+                    <h3>Draw implementation arrow between Actors</h3>
+                    <p>The operator for drawing an implementation arrow between two Actors is [variable] implements [variable]
+                    where both variables are of type Actor.<br>
+                    <br>
+                    Example:<br>
+                    Actor a<br>
+                    Actor b<br>
+                    a implements b</p>
+                    <h3>Object placement</h3>
+                    <p>When clicking the "Draw" button, an algorithm will place the different objects in the diagram
+                    as well as it can. In most cases smaller diagrams will look good and well distributed but sometimes
+                    you might want to change the placements on your own. This is simply done by dragging and dropping
+                    objects with the cursor.<br>
+                    <br>
+                    To test changing object placement, simply load the "Use Case Diagram" example from
+                    the menu bar and try changing the appearance of the diagram in as many ways as you can.</p>
+                </div>
             </div>
         </div> 
         <div class="navbar">

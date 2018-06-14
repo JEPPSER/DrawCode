@@ -23,8 +23,6 @@ main(){
   var helpBtn = querySelector('#helpBtn');
   var myModal = querySelector('#myModal');
   var helpWindow = querySelector('#helpWindow');
-  var closeExport = document.getElementsByClassName("closeExport")[0];
-  var closeHelp = document.getElementsByClassName("closeHelp")[0];
   CanvasElement myCanvas = querySelector('#myCanvas');
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
   var flowchartEx = querySelector('#flowchartEx');
@@ -106,14 +104,6 @@ main(){
     myCanvas.width = 1920;
     myCanvas.height = 1080;
     drawCanvas(str, g, objects);
-  });
-
-  closeExport.onClick.listen((_) {
-    myModal.style.display = "none";
-  });
-
-  closeHelp.onClick.listen((_) {
-    helpWindow.style.display = "none";
   });
 
   window.onClick.listen((MouseEvent e) {
