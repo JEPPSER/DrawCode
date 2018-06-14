@@ -111,6 +111,14 @@ body {
     border: 1px solid #888;
     width: 300px;
 }
+.contact-content {
+    font-family: Arial;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+}
 .help-content {
     background-color: #fefefe;
     margin: auto;

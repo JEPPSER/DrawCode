@@ -2,11 +2,11 @@ import 'dart:html';
 import 'FlowchartParser.dart';
 import 'DiagramObject.dart';
 import 'Flowchart.dart';
-import 'FlowchartListener.dart';
+import 'FlowchartController.dart';
 import 'FlowchartRenderer.dart';
 import 'UseCaseParser.dart';
 import 'UseCaseDiagram.dart';
-import 'UseCaseListener.dart';
+import 'UseCaseController.dart';
 import 'UseCaseRenderer.dart';
 import 'ExampleLoader.dart';
 import 'If.dart';
@@ -21,8 +21,10 @@ main(){
   var fileBtn = querySelector('#fileBtn');
   var exportBtn = querySelector('#exportBtn');
   var helpBtn = querySelector('#helpBtn');
+  var contactBtn = querySelector('#contactBtn');
   var myModal = querySelector('#myModal');
   var helpWindow = querySelector('#helpWindow');
+  var contactWindow = querySelector('#contactWindow');
   CanvasElement myCanvas = querySelector('#myCanvas');
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
   var flowchartEx = querySelector('#flowchartEx');
@@ -60,7 +62,7 @@ main(){
       objects = parser.parse(str);
       Flowchart r = new Flowchart();
       r.render(g, objects);
-      FlowchartListener fl = new FlowchartListener(myCanvas, g, objects);
+      FlowchartController fl = new FlowchartController(myCanvas, g, objects);
       fl.listen();
       subs = fl.getSubscriptions();
     } else if(str.startsWith("<usecase>")){
@@ -68,7 +70,7 @@ main(){
       objects = parser.parse(str);
       UseCaseDiagram ucd = new UseCaseDiagram();
       ucd.render(g, objects);
-      UseCaseListener ucl = new UseCaseListener(myCanvas, g, objects);
+      UseCaseController ucl = new UseCaseController(myCanvas, g, objects);
       ucl.listen();
       subs = ucl.getSubscriptions();
     }
@@ -83,6 +85,10 @@ main(){
 
   helpBtn.onClick.listen((_) {
     helpWindow.style.display = "block";
+  });
+
+  contactBtn.onClick.listen((_) {
+    contactWindow.style.display = "block";
   });
 
   fileBtn.onClick.listen((_) {
@@ -112,6 +118,9 @@ main(){
     }
     if(e.target == helpWindow){
       helpWindow.style.display = "none";
+    }
+    if(e.target == contactWindow){
+      contactWindow.style.display = "none";
     }
   });
 }

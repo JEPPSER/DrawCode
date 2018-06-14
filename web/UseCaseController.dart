@@ -5,7 +5,7 @@ import 'dart:html';
 import 'dart:async';
 import 'dart:math';
 
-class UseCaseListener {
+class UseCaseController {
 
   CanvasElement canvas;
   CanvasRenderingContext2D g;
@@ -17,7 +17,7 @@ class UseCaseListener {
 
   Point startPoint;
 
-  UseCaseListener(CanvasElement canvas, CanvasRenderingContext2D g, List<DiagramObject> objects){
+  UseCaseController(CanvasElement canvas, CanvasRenderingContext2D g, List<DiagramObject> objects){
     this.canvas = canvas;
     this.g = g;
     this.objects = objects;

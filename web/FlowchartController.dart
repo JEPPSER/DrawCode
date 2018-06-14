@@ -7,7 +7,7 @@ import 'dart:html';
 import 'dart:async';
 import 'dart:math';
 
-class FlowchartListener {
+class FlowchartController {
 
   CanvasElement canvas;
   CanvasRenderingContext2D g;
@@ -24,7 +24,7 @@ class FlowchartListener {
 
   Point startPoint;
 
-  FlowchartListener(CanvasElement canvas, CanvasRenderingContext2D g, List<DiagramObject> objects){
+  FlowchartController(CanvasElement canvas, CanvasRenderingContext2D g, List<DiagramObject> objects){
     this.canvas = canvas;
     this.g = g;
     this.objects = objects;
