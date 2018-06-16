@@ -46,7 +46,8 @@ class DFAParser {
     for(int i = 0; i < list.length; i++){
       if(list[i].name == parts[0]){
         a = i;
-      } else if(list[i].name == parts[1]){
+      }
+      if(list[i].name == parts[1]){
         b = i;
       }
     }

@@ -31,10 +31,17 @@ main(){
   CanvasRenderingContext2D g = myCanvas.getContext("2d");
   var flowchartEx = querySelector('#flowchartEx');
   var usecaseEx = querySelector('#usecaseEx');
+  var dfaEx = querySelector('#dfaEx');
 
   List<DiagramObject> objects;
   List<StreamSubscription> subs = new List<StreamSubscription>();
   ExampleLoader exLoader = new ExampleLoader();
+
+  dfaEx.onClick.listen((_) {
+    String str = exLoader.getDFAExample();
+    context.callMethod('setText', [str]);
+    drawBtn.click();
+  });
 
   flowchartEx.onClick.listen((_) {
     String str = exLoader.getFlowchartExample();

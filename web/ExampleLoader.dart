@@ -7,4 +7,8 @@ class ExampleLoader {
   String getUseCaseExample(){
     return "<usecase>\nActor james\njames.text=\"James\"\nActor bond\nbond.text=\"Bond\"\njames implements bond\nUseCase a\na.text=\"Add Guest\"\nUseCase b\nb.text=\"Remove Guest\"\nUseCase c\nc.text=\"View Guest\"\nUseCase d\nd.text=\"Print Bill\"\njames->a\njames->b\nbond->b\na extends c\nd includes c\nSystem sys\nsys.text=\"system\"\nsys add a\nsys add b\nsys add c\nsys add d";
   }
+
+  String getDFAExample(){
+    return "<dfa>\n->State a\nState b\n(State) c\na->b : 1\na->c : 0\nb->b : 1\nb->c : 0\nc->b : 0\nc->a : 1";
+  }
 }
