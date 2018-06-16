@@ -6,4 +6,5 @@ class Arrow {
   List<Point> points = new List<Point>();
   DiagramObject from;
   DiagramObject to;
+  String text;
 }
