@@ -19,11 +19,11 @@ class ClassDiagramParser {
         package(list, lines[i], i);
       } else if(lines[i].contains(" add ")){
         add(list, lines[i], i);
-      } else if(lines[i].contains("- ->")){
+      } else if(lines[i].contains("-->")){
         dependency(list, lines[i], i);
       } else if(lines[i].contains("-|>")){
         inheritance(list, lines[i], i);
-      } else if(lines[i].contains("- -|>")){
+      } else if(lines[i].contains("--|>")){
         realization(list, lines[i], i);
       } else if(lines[i].contains(")-(")){
         association(list, lines[i], i);
@@ -172,7 +172,7 @@ class ClassDiagramParser {
   }
 
   void realization(List<DiagramObject> list, String line, int lineNumber){
-    List<String> parts = line.split("- -|>");
+    List<String> parts = line.split("--|>");
     int a = -1;
     int b = -1;
     for(int i = 0; i < list.length; i++){
@@ -218,7 +218,7 @@ class ClassDiagramParser {
   }
 
   void dependency(List<DiagramObject> list, String line, int lineNumber){
-    List<String> parts = line.split("- ->");
+    List<String> parts = line.split("-->");
     int a = -1;
     int b = -1;
     for(int i = 0; i < list.length; i++){
