@@ -8,6 +8,8 @@ import 'UseCaseParser.dart';
 import 'UseCaseDiagram.dart';
 import 'UseCaseController.dart';
 import 'UseCaseRenderer.dart';
+import 'DFA.dart';
+import 'DFAParser.dart';
 import 'ExampleLoader.dart';
 import 'If.dart';
 import 'Arrow.dart';
@@ -73,6 +75,11 @@ main(){
       UseCaseController ucl = new UseCaseController(myCanvas, g, objects);
       ucl.listen();
       subs = ucl.getSubscriptions();
+    } else if(str.startsWith("<dfa>")){
+      DFAParser parser = new DFAParser();
+      objects = parser.parse(str);
+      DFA dfa = new DFA();
+      dfa.render(g, objects);
     }
   });
 
