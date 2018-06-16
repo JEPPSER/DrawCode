@@ -103,7 +103,7 @@ class FlowchartRenderer {
     int headlen = 15;
     Point to = arrow.points[arrow.points.length - 1];
     Point from = arrow.points[arrow.points.length - 2];
-    double angle = atan2(to.y  - from.y, to.x - from.x);
+    double angle = atan2(to.y - from.y, to.x - from.x);
     g.moveTo(arrow.points[0].x, arrow.points[0].y);
     for(int i = 1; i < arrow.points.length; i++){
       g.lineTo(arrow.points[i].x, arrow.points[i].y);

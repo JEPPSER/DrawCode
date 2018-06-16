@@ -40,7 +40,8 @@ class DFAParser {
   }
 
   void arrow(List<DiagramObject> list, String line, int lineNumber){
-    List<String> parts = line.split("->");
+    String temp = line.split(" : ")[0];
+    List<String> parts = temp.split("->");
     int a = -1;
     int b = -1;
     for(int i = 0; i < list.length; i++){
