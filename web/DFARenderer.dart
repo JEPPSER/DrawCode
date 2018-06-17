@@ -17,9 +17,11 @@ class DFARenderer {
     // Draw objects
     for(int i = 0; i < objects.length; i++){
       State s = objects[i];
-      drawArrows(g, s);
+      drawArrows(g, s, scale);
       drawState(g, s);
-      g.fillText(s.name, s.x + s.width / 2, s.y + s.height / 2);
+      int x = ((s.x + s.width / 2) - s.name.length * scale * 1.9).floor();
+      int y = (s.y + s.height / 2 + scale * 3).floor();
+      g.fillText(s.name, x, y);
     }
   }
 
@@ -31,12 +33,30 @@ class DFARenderer {
       g.beginPath();
       g.arc(state.x + state.width / 2, state.y + state.height / 2, state.width / 2.5, 0, 2*PI);
       g.stroke();
+    } else if(state.type == StateType.START){
+      int fromX = state.x - 100;
+      int fromY = (state.y + state.height / 2).floor();
+      int toX = state.x;
+      int toY = fromY;
+      drawSingleArrow(g, new Point(fromX, fromY), new Point(toX, toY));
     }
   }
 
-  void drawArrows(CanvasRenderingContext2D g, State state){
+  void drawSingleArrow(CanvasRenderingContext2D g, Point from, Point to){
     g.beginPath();
+    int headlen = 15;
+    double angle = atan2(to.y - from.y, to.x - from.x);
+    g.moveTo(from.x, from.y);
+    g.lineTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
+    g.moveTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
+    g.stroke();
+  }
+
+  void drawArrows(CanvasRenderingContext2D g, State state, double scale){
     for(int i = 0; i < state.connections.length; i++){
+      g.beginPath();
       Arrow a = state.connections[i];
       List<Point> points;
       if(a.points.length > 2){
@@ -48,18 +68,39 @@ class DFARenderer {
       for(int j = 1; j < points.length; j++){
         g.lineTo(points[j].x, points[j].y);
       }
-      double angle = getAngle(points[points.length - 2], points[points.length - 1]);
+      double angle;
+      if(points.length < 2){
+        angle = PI;
+      } else {
+        angle = getAngle(points[points.length - 2], points[points.length - 1]);
+      }
       int headlen = 15;
       int toX = points[points.length - 1].x;
       int toY = points[points.length - 1].y;
       g.lineTo(toX-headlen*cos(angle-PI/6), toY-headlen*sin(angle-PI/6));
       g.moveTo(toX, toY);
       g.lineTo(toX-headlen*cos(angle+PI/6), toY-headlen*sin(angle+PI/6));
+      Point middle;
+      if(points.length > 1){
+        middle = getMiddle(points[((points.length - 1) / 2).floor()], points[((points.length - 1) / 2).floor() + 1]);
+      } else {
+        middle = points[0];
+      }
+      g.stroke();
+      g.setFillColorRgb(255, 255, 255);
+      g.fillRect(middle.x - 10, middle.y - 10, 20, 20);
+      g.setFillColorRgb(0, 0, 0);
+      g.fillText(a.text, middle.x - 5, middle.y + 5);
     }
-    g.stroke();
   }
 
-  Point middle(List<Point> points) {
+  Point getMiddle(Point a, Point b){
+    int x = a.x + (b.x - a.x) / 2;
+    int y = a.y + (b.y - a.y) / 2;
+    return new Point(x, y);
+  }
+
+  Point getCircleCenter(List<Point> points) {
 		double yDelta_a = points[1].y - points[0].y;
 		double xDelta_a = points[1].x - points[0].x;
 		double yDelta_b = points[2].y - points[1].y;
@@ -114,7 +155,7 @@ class DFARenderer {
 
   List<Point> circularCurve(List<Point> points) {
     List<Point> list = new List<Point>();
-		Point center = middle(points);
+		Point center = getCircleCenter(points);
     double big = atan2(center.y - points[0].y, center.x - points[0].x);
 		double small = atan2(points[1].y - points[0].y, points[1].x - points[0].x);
     bool right = direction(big, small);

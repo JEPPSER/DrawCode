@@ -11,10 +11,12 @@ import 'UseCaseRenderer.dart';
 import 'DFA.dart';
 import 'DFAParser.dart';
 import 'DFAController.dart';
+import 'DFARenderer.dart';
 import 'ExampleLoader.dart';
 import 'If.dart';
 import 'Arrow.dart';
 import 'Square.dart';
+import 'State.dart';
 import 'dart:async';
 import 'dart:js';
 
@@ -150,6 +152,9 @@ void drawCanvas(String str, CanvasRenderingContext2D g, List<DiagramObject> obje
   } else if(str.startsWith("<usecase>")){
     UseCaseRenderer renderer = new UseCaseRenderer();
     renderer.render(g, objects);
+  } else if(str.startsWith("<dfa>")){
+    DFARenderer renderer = new DFARenderer();
+    renderer.render(g, objects);
   }
 }
 
@@ -178,10 +183,10 @@ void cropCanvas(CanvasElement myCanvas, List<DiagramObject> objects){
         bottomY = objects[j];
       }
     }
-    x = leftMostX.x - 50;
-    y = topY.y - 50;
-    width = rightMostX.x + rightMostX.width + 50 - x;
-    height = bottomY.y + bottomY.height + 50 - y;
+    x = leftMostX.x - 100;
+    y = topY.y - 100;
+    width = rightMostX.x + rightMostX.width + 100 - x;
+    height = bottomY.y + bottomY.height + 100 - y;
   }
 
   for(int i = 0; i < objects.length; i++){
@@ -203,6 +208,14 @@ void cropCanvas(CanvasElement myCanvas, List<DiagramObject> objects){
       }
     } else if(objects[i] is Square){
       Square s = objects[i];
+      for(int j = 0; j < s.connections.length; j++){
+        Arrow a = s.connections[j];
+        for(int k = 0; k < a.points.length; k++){
+          a.points[k] = new Point(a.points[k].x - x, a.points[k].y - y);
+        }
+      }
+    } else if(objects[i] is State){
+      State s = objects[i];
       for(int j = 0; j < s.connections.length; j++){
         Arrow a = s.connections[j];
         for(int k = 0; k < a.points.length; k++){
