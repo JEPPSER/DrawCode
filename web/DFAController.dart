@@ -63,12 +63,15 @@ class DFAController {
           for(int j = 0; j < s.connections.length; j++){
             Arrow arrow = s.connections[j];
             for(int k = 0; k < arrow.points.length; k++){
-              if(mousePos.distanceTo(arrow.points[k]) < 15 && k != 0 && k != arrow.points.length - 1){
+              if(mousePos.distanceTo(arrow.points[k]) < 100 && k != 0 &&
+                  k != arrow.points.length - 1 && arrow.from != arrow.to){
                 drawRedCircle(g, arrow.points[k].x, arrow.points[k].y);
-                currentArrow = arrow;
-                arrowPointIndex = k;
-                isOnPoint = true;
-                break outerloop;
+                if(mousePos.distanceTo(arrow.points[k]) < 15){
+                  currentArrow = arrow;
+                  arrowPointIndex = k;
+                  isOnPoint = true;
+                  break outerloop;
+                }
               } else if(k > 0 && arrow.points.length == 2){
                 isOnPoint = false;
                 Point a = arrow.points[k - 1];
@@ -150,10 +153,12 @@ class DFAController {
         startPoint = mousePos;
       } else if(isDown && currentArrow != null){ // Holding on arrow.
         if(me.button == 0){
-          currentArrow.points[arrowPointIndex] = getMousePosition(me);
+          Point mousePos = getMousePosition(me);
+          currentArrow.points[arrowPointIndex] = mousePos;
           setEdgePoints(currentArrow);
           g.clearRect(0, 0, canvas.width, canvas.height);
           renderer.render(g, objects);
+          drawRedCircle(g, mousePos.x, mousePos.y);
         }
       }
     });
