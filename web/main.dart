@@ -10,6 +10,7 @@ import 'UseCaseController.dart';
 import 'UseCaseRenderer.dart';
 import 'DFA.dart';
 import 'DFAParser.dart';
+import 'DFAController.dart';
 import 'ExampleLoader.dart';
 import 'If.dart';
 import 'Arrow.dart';
@@ -87,6 +88,9 @@ main(){
       objects = parser.parse(str);
       DFA dfa = new DFA();
       dfa.render(g, objects);
+      DFAController c = new DFAController(myCanvas, g, objects);
+      c.listen();
+      subs = c.getSubscriptions();
     }
   });
 

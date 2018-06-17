@@ -47,7 +47,64 @@ class DFA {
       }
     }
 
+    List<Arrow> doneArrows = new List<Arrow>();
+
+    // Bend arrows that go back and forth.
+    for(int i = 0; i < objects.length; i++){
+      State s = objects[i];
+      for(int j = 0; j < s.connections.length; j++){
+        State other = s.connections[j].to;
+        if(!doneArrows.contains(s.connections[j]) && s != other){
+          for(int k = 0; k < other.connections.length; k++){
+            if(other.connections[k].to == s && !doneArrows.contains(other.connections[k])){
+              Point a = new Point(s.x + s.width / 2, s.y + s.height / 2);
+              Point b = new Point(other.x + other.width / 2, other.y + other.height / 2);
+              Point middle = getMiddle(a, b);
+              double angle = PI - (PI / 2 - atan2(b.y  - a.y, b.x - a.x));
+              double x = 20 * cos(angle);
+              double y = 20 * sin(angle);
+              Point temp = other.connections[k].points[1];
+              other.connections[k].points.add(temp);
+              other.connections[k].points[1] = new Point(middle.x + x, middle.y + y);
+              setEdgePoints(other.connections[k]);
+              doneArrows.add(other.connections[k]);
+              temp = s.connections[j].points[1];
+              s.connections[j].points.add(temp);
+              s.connections[j].points[1] = new Point(middle.x - x, middle.y - y);
+              setEdgePoints(s.connections[j]);
+              doneArrows.add(s.connections[j]);
+            }
+          }
+        }   
+      }
+    }
+
     DFARenderer renderer = new DFARenderer();
     renderer.render(g, objects);
+  }
+
+  Point getMiddle(Point a, Point b){
+    int x = a.x + (b.x - a.x) / 2;
+    int y = a.y + (b.y - a.y) / 2;
+    return new Point(x, y);
+  }
+
+  void setEdgePoints(Arrow a){
+    if(a.from != a.to){
+      Point from = new Point(a.from.x + a.from.width / 2, a.from.y + a.from.height / 2);
+      double angle = getAngle(from, a.points[1]);
+      double x = (a.from.width / 2) * cos(angle);
+      double y = (a.from.width / 2) * sin(angle);
+      a.points[0] = new Point(a.from.x + a.from.width / 2 + x, a.from.y + a.from.height / 2 + y);
+      Point to = new Point(a.to.x + a.to.width / 2, a.to.y + a.to.height / 2);
+      angle = getAngle(to, a.points[1]);
+      x = (a.to.width / 2) * cos(angle);
+      y = (a.to.width / 2) * sin(angle);
+      a.points[2] = new Point(a.to.x + a.to.width / 2 + x, a.to.y + a.to.height / 2 + y);
+    }  
+  }
+
+  double getAngle(Point a, Point b){
+    return atan2(b.y  - a.y, b.x - a.x);
   }
 }
