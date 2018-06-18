@@ -26,6 +26,7 @@
                 <div class="tab">
                     <button class="tablinks" onclick="openTab(event, 'Flowchart')">Flowchart</button>
                     <button class="tablinks" onclick="openTab(event, 'Usecase')">Use Case Diagram</button>
+                    <button class="tablinks" onclick="openTab(event, 'DFA')">DFA</button>
                 </div>
                 <div id="Flowchart" class="tabcontent">
                     <h3>Specify the type of diagram</h3>
@@ -146,6 +147,50 @@
                     <br>
                     To test changing object placement, simply load the "Use Case Diagram" example from
                     the menu bar and try changing the appearance of the diagram in as many ways as you can.</p>
+                </div>
+                <div id="DFA" class="tabcontent">
+                    <h3>Specify the type of diagram</h3>
+                    <p>The type of diagram you want to make has to be specified at the very first line.
+                    To specify that you want to make a DFA, write &#60dfa&#62 in the first line.
+                    Load the "DFA" example from the menu bar for reference.</p>
+                    <h3>Add an object to the diagram</h3>
+                    <p>There are three different objects that can be added to a DFA:
+                    start state, normal state and end state. Syntax for start state is ->State, normal state is State, end state is (State).
+                    You can explore what the different objects look like by loading the "DFA" example.<br>
+                    An object is initialized by typing the name of the object followed by a space and a variable name.<br>
+                    (Variable names can be of any length.)<br>
+                    <br>
+                    Example:<br>
+                    ->State s1<br>
+                    State s2<br>
+                    (State) s3<br>
+                    <br>
+                    (note: Each command must be separated by a new line)</p>
+                    <h3>Draw an arrow between two states (or to itself)</h3>
+                    <p>The operator for drawing an arrow is [variable]->[variable]: [text].<br>
+                    [text] is any text you want to display next to the arrow.<br>
+                    <br>
+                    Example:<br>
+                    ->State s1<br>
+                    State s2<br>
+                    (State) s3<br>
+                    s1->s2: a<br>
+                    s1->s3: b<br>
+                    s2->s2: a,c<br>
+                    s2->s3: b</p>
+                    <h3>Object placement</h3>
+                    <p>When clicking the "Draw" button, an algorithm will place the different objects in the diagram
+                    as well as it can. The algorithm will place all objects that are connected next to eachother and the
+                    distance between all objects will be big enough so no objects will overlap but
+                    you might want to change the placements on your own. This is simply done by dragging and dropping
+                    objects with the cursor.<br>
+                    <br>
+                    You can bend arrows by clicking them to create new points that a curve will be drawn though.
+                    Move the points by clicking and dragging the red circle visible when hovering over the arrow.
+                    To remove the point and make the arrow staight again, simply right click on the red circle.<br>
+                    <br>
+                    To test changing object placement, simply load the "DFA" example from the menu bar and try
+                    changing the appearance of the diagram in as many ways as you can.</p>
                 </div>
             </div>
         </div> 

@@ -19,7 +19,7 @@ class DFARenderer {
       State s = objects[i];
       drawArrows(g, s, scale);
       drawState(g, s);
-      int x = ((s.x + s.width / 2) - s.name.length * scale * 1.9).floor();
+      int x = ((s.x + s.width / 2) - s.name.length * scale * 2.2).floor();
       int y = (s.y + s.height / 2 + scale * 3).floor();
       g.fillText(s.name, x, y);
     }
