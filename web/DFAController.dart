@@ -64,7 +64,7 @@ class DFAController {
             Arrow arrow = s.connections[j];
             for(int k = 0; k < arrow.points.length; k++){
               if(mousePos.distanceTo(arrow.points[k]) < 100 && k != 0 &&
-                  k != arrow.points.length - 1 && arrow.from != arrow.to){
+                  k != arrow.points.length - 1 && arrow.from != arrow.to && !isLoopingArrow(arrow)){
                 drawRedCircle(g, arrow.points[k].x, arrow.points[k].y);
                 if(mousePos.distanceTo(arrow.points[k]) < 15){
                   currentArrow = arrow;
@@ -255,6 +255,16 @@ class DFAController {
     int x = a.x + (b.x - a.x) / 2;
     int y = a.y + (b.y - a.y) / 2;
     return new Point(x, y);
+  }
+
+  bool isLoopingArrow(Arrow a){
+    State s = a.to;
+    for(int i = 0; i < s.connections.length; i++){
+      if(s.connections[i].to == a.from){
+        return true;
+      }
+    }
+    return false;
   }
 
   void setLoopArrows(){

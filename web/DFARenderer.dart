@@ -74,6 +74,9 @@ class DFARenderer {
       } else {
         angle = getAngle(points[points.length - 2], points[points.length - 1]);
       }
+      if(a.to == a.from){
+        angle -= 0.15;
+      }
       int headlen = 15;
       int toX = points[points.length - 1].x;
       int toY = points[points.length - 1].y;
