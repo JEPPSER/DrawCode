@@ -7,6 +7,11 @@ import 'dart:math';
 
 class DFA {
 
+  Random rand = new Random();
+  List<State> doneObjects = new List<State>();
+  int length = 200;
+  List<DiagramObject> objects;
+
   void render(CanvasRenderingContext2D g, List<DiagramObject> objects){
     double scale = 2.0 - (objects.length / 10);
     if(scale < 1.2){
@@ -14,13 +19,17 @@ class DFA {
     }
     g.font = (12 * scale).toString() + "px Arial";
 
-    Random rand = new Random();
+    this.objects = objects;
 
     // Set x and y for all objects.
+    if(objects.length > 0){
+      objects[0].x = 400;
+      objects[0].y = 400;
+    }
+    doneObjects.add(objects[0]);
     for(int i = 0; i < objects.length; i++){
       State s = objects[i];
-      s.x = rand.nextInt(700);
-      s.y = rand.nextInt(500);
+      placeConnections(s);
     }
 
     // Set points for arrows
@@ -81,6 +90,44 @@ class DFA {
 
     DFARenderer renderer = new DFARenderer();
     renderer.render(g, objects);
+  }
+
+  void placeConnections(State s){
+    for(int i = 0; i < s.connections.length; i++){
+      Arrow a = s.connections[i];
+      if(!doneObjects.contains(a.to)){
+        bool done = false;
+        for(int j = 0; !done && j < 100; j++){
+          double angle = rand.nextDouble() * 2 * PI;
+          int x = (a.from.x + cos(angle) * length).floor();
+          int y = (a.from.y + sin(angle) * length).floor();
+          if(x < 0 || y < 0 || x > 1920 || y > 1080 || isOverlapping(x, y)){
+            done = false;
+          } else {
+            done = true;
+            a.to.x = x;
+            a.to.y = y;
+            doneObjects.add(a.to);
+            placeConnections(a.to);
+          }
+        }
+      }
+    }
+  }
+
+  bool isOverlapping(int x, int y){
+    bool result = false;
+    for(int i = 0; i < objects.length; i++){
+      if(objects[i].x != null && objects[i].y != null){
+        Point one = new Point(x, y);
+        Point two = new Point(objects[i].x, objects[i].y);
+        if(one.distanceTo(two) < 100){
+          result = true;
+          break;
+        }
+      }
+    }
+    return result;
   }
 
   Point getMiddle(Point a, Point b){

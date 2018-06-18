@@ -40,7 +40,7 @@ class DFAParser {
   }
 
   void arrow(List<DiagramObject> list, String line, int lineNumber){
-    String temp = line.split(" : ")[0];
+    String temp = line.split(": ")[0];
     List<String> parts = temp.split("->");
     int a = -1;
     int b = -1;
@@ -57,7 +57,7 @@ class DFAParser {
       Arrow arrow = new Arrow();
       arrow.from = s;
       arrow.to = list[b];
-      String text = line.split(" : ")[1];
+      String text = line.split(": ")[1];
       arrow.text = text;
       s.connections.add(arrow);
     } else {

@@ -9,6 +9,6 @@ class ExampleLoader {
   }
 
   String getDFAExample(){
-    return "<dfa>\n->State a\nState b\n(State) c\na->b : 1\na->c : 0\nb->b : 1\nb->c : 0\nc->b : 0\nc->a : 1";
+    return "<dfa>\n->State s1\nState s2\nState s3\nState s4\n(State) s5\nState s6\n(State) s7\nState s8\n(State) s9\nState s10\n(State) s11\ns1->s2: i\ns2->s3: a\ns2->s8: c\ns3->s3: a\ns3->s4: c\ns4->s5: b\ns4->s6: o\ns6->s6: o\ns6->s7: b\ns8->s9: b\ns8->s10: o\ns10->s10: o\ns10->s11: b\ns10->s8: a";
   }
 }
