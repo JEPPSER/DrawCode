@@ -17,6 +17,8 @@ import 'If.dart';
 import 'Arrow.dart';
 import 'Square.dart';
 import 'State.dart';
+import 'ClassDiagram.dart';
+import 'ClassParser.dart';
 import 'dart:async';
 import 'dart:js';
 
@@ -93,6 +95,11 @@ main(){
       DFAController c = new DFAController(myCanvas, g, objects);
       c.listen();
       subs = c.getSubscriptions();
+    } else if(str.startsWith("<class>")){
+      ClassParser parser = new ClassParser();
+      objects = parser.parse(str);
+      ClassDiagram cd = new ClassDiagram();
+      cd.render(g, objects);
     }
   });
 

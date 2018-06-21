@@ -3,7 +3,7 @@ import 'Class.dart';
 import 'Association.dart';
 import 'Package.dart';
 
-class ClassDiagramParser {
+class ClassParser {
 
   List<DiagramObject> parse(String string){
     List<DiagramObject> list = new List<DiagramObject>();

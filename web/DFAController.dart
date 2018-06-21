@@ -12,6 +12,7 @@ class DFAController {
   CanvasRenderingContext2D g;
   List<DiagramObject> objects;
   bool isDown = false;
+  int buttonIndex = 0;
   DiagramObject currentObject;
   List<StreamSubscription> subs;
   DFARenderer renderer;
@@ -32,10 +33,11 @@ class DFAController {
   void listen(){
     StreamSubscription s1 = canvas.onMouseDown.listen((MouseEvent me) {
       Point mousePos = getMousePosition(me);
+      buttonIndex = me.button;
       if(currentArrow != null && !isDown){
-        if(!isOnPoint && me.button == 0){
+        if(!isOnPoint && buttonIndex == 0){
           addAt(currentArrow.points, mousePos, arrowPointIndex);
-        } else if(isOnPoint && me.button == 2 && currentArrow.points.length > 2 && currentArrow.from != currentArrow.to){
+        } else if(isOnPoint && buttonIndex == 2 && currentArrow.points.length > 2 && currentArrow.from != currentArrow.to){
           setTwoPoints(currentArrow);
           g.clearRect(0, 0, canvas.width, canvas.height);
           renderer.render(g, objects);
@@ -152,7 +154,7 @@ class DFAController {
         renderer.render(g, objects);
         startPoint = mousePos;
       } else if(isDown && currentArrow != null){ // Holding on arrow.
-        if(me.button == 0){
+        if(buttonIndex == 0){
           Point mousePos = getMousePosition(me);
           currentArrow.points[arrowPointIndex] = mousePos;
           setEdgePoints(currentArrow);
