@@ -33,9 +33,25 @@ class ClassParser {
         aggregation(list, lines[i], i);
       } else if(lines[i].contains(")<#>-(")){
         composition(list, lines[i], i);
+      } else if(lines[i].contains(".text=")){
+        text(list, lines[i], i);
       }
     }
     return list;
+  }
+
+  void text(List<DiagramObject> list, String line, int lineNumber){
+    List<String> parts = line.split(".text=");
+    for(int i = 0; i < list.length; i++){
+      if(parts[0] == list[i].name && list[i] is Package){
+        if(parts[1][0] == "\"" && parts[1][parts[1].length - 1] == "\""){
+          Package p = list[i];
+          p.text = parts[1].replaceAll("\"", "");
+        } else {
+          print("ERROR: string must be between two \" symbols\nline: $lineNumber");
+        }
+      }
+    }
   }
 
   void package(List<DiagramObject> list, String line, int lineNumber){

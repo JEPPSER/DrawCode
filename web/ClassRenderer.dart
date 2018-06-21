@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'DiagramObject.dart';
 import 'Class.dart';
+import 'Package.dart';
 
 class ClassRenderer {
 
@@ -17,17 +18,65 @@ class ClassRenderer {
 
     // Draw objects
     for(int i = 0; i < objects.length; i++){
-      Class s = objects[i];
-      if(s.type == ClassType.CLASS){
-        drawClass(g, s);
-      } else if(s.type == ClassType.ENUM){
-        drawEnum(g, s);
-      } else if(s.type == ClassType.INTERFACE){
-        drawInterface(g, s);
+      if(objects[i] is Class){
+        Class s = objects[i];
+        if(s.type == ClassType.CLASS){
+          drawClass(g, s);
+        } else if(s.type == ClassType.ENUM){
+          drawEnum(g, s);
+        } else if(s.type == ClassType.INTERFACE){
+          drawInterface(g, s);
+        }
+      } else if(objects[i] is Package){
+        Package p = objects[i];
+        setPackagePosition(p, objects);
+        drawPackage(g, p); 
       }
     }
 
     g.stroke();
+  }
+
+  void drawPackage(CanvasRenderingContext2D g, Package p){
+    g.strokeRect(p.x, p.y, p.width, p.height);
+    g.moveTo(p.x, p.y + scale * 12);
+    String text;
+    if(p.text == null){
+      text = p.name;
+    } else {
+      text = p.text;
+    }
+    g.lineTo(p.x + text.length * scale * 4, p.y + scale * 12);
+    g.lineTo(p.x + text.length * scale * 4 + scale * 5, p.y + scale * 6);
+    g.lineTo(p.x + text.length * scale * 4 + scale * 5, p.y);
+    g.fillText(text, p.x + scale * 2, p.y + scale * 8);
+  }
+
+  void setPackagePosition(Package p, List<DiagramObject> objects){
+    if(p.classes.length > 0){
+      Class leftMostX = p.classes[0];
+      Class rightMostX = p.classes[0];
+      Class topY = p.classes[0];
+      Class bottomY = p.classes[0];
+      for(int j = 1; j < p.classes.length; j++){
+        if(p.classes[j].x < leftMostX.x){
+          leftMostX = p.classes[j];
+        }
+        if(p.classes[j].x + p.classes[j].width > rightMostX.x + rightMostX.width){
+          rightMostX = p.classes[j];
+        }
+        if(p.classes[j].y < topY.y){
+          topY = p.classes[j];
+        }
+        if(p.classes[j].y + p.classes[j].height > bottomY.y + bottomY.height){
+          bottomY = p.classes[j];
+        }
+      }
+      p.x = leftMostX.x - 50;
+      p.y = topY.y - 50;
+      p.width = rightMostX.x + rightMostX.width + 50 - p.x;
+      p.height = bottomY.y + bottomY.height + 50 - p.y;
+    }
   }
 
   void drawEnum(CanvasRenderingContext2D g, Class s){

@@ -22,11 +22,14 @@ class DFA {
     this.objects = objects;
 
     // Set x and y for all objects.
-    if(objects.length > 0){
+    if(objects.length > 1){
       objects[0].x = 400;
       objects[0].y = 400;
+      objects[1].x = 400 + length;
+      objects[1].y = 400;
     }
     doneObjects.add(objects[0]);
+    doneObjects.add(objects[1]);
     for(int i = 0; i < objects.length; i++){
       State s = objects[i];
       placeConnections(s);
