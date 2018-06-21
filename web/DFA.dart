@@ -101,7 +101,7 @@ class DFA {
           double angle = rand.nextDouble() * 2 * PI;
           int x = (a.from.x + cos(angle) * length).floor();
           int y = (a.from.y + sin(angle) * length).floor();
-          if(x < 0 || y < 0 || x > 1920 || y > 1080 || isOverlapping(x, y)){
+          if(x < 0 || y < 0 || x > 1800 || y > 1000 || isOverlapping(x, y)){
             done = false;
           } else {
             done = true;
