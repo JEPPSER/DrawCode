@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:math';
 import 'DiagramObject.dart';
 import 'Class.dart';
 import 'Package.dart';
@@ -124,17 +125,79 @@ class ClassRenderer {
   }
 
   void drawRealization(CanvasRenderingContext2D g, Arrow a){
-    g.moveTo(a.points[0].x, a.points[0].y);
-    for(int i = 1; i < a.points.length; i++){
-      g.lineTo(a.points[i].x, a.points[i].y);
+    int headlen = 15;
+    double angle;
+    for(int j = 1; j < a.points.length; j++){
+      Point from = a.points[j - 1];
+      Point to = a.points[j];
+      angle = atan2(to.y - from.y, to.x - from.x);
+      double x = headlen * 0.9 * cos(angle);
+      double y = headlen * 0.9 * sin(angle);
+      g.moveTo(from.x, from.y);
+      Point current = from;
+      Point last = to;
+      if(j == a.points.length - 1){
+        int difx = (headlen * 0.9 * cos(angle)).floor();
+        int dify = (headlen * 0.9 * sin(angle)).floor();
+        last = new Point(last.x - difx, last.y - dify);
+      }
+      int i = 0;
+      while(current.distanceTo(last) > headlen){
+        current = new Point(current.x + x, current.y + y);
+        if(i % 2 == 0){
+          g.lineTo(current.x, current.y);
+        } else {
+          g.moveTo(current.x, current.y);
+        }
+        i++;
+      }
+      if(i % 2 == 0){
+        g.lineTo(last.x, last.y);
+      } else {
+        g.moveTo(last.x, last.y);
+      }
     }
+
+    int difx = (headlen * 0.9 * cos(angle)).floor();
+    int dify = (headlen * 0.9 * sin(angle)).floor();
+    Point to = a.points[a.points.length - 1];
+    g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
+    g.lineTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
+    g.lineTo(to.x - difx, to.y - dify);
   }
 
   void drawDependancy(CanvasRenderingContext2D g, Arrow a){
-    g.moveTo(a.points[0].x, a.points[0].y);
-    for(int i = 1; i < a.points.length; i++){
-      g.lineTo(a.points[i].x, a.points[i].y);
+    int headlen = 15;
+    double angle;
+    for(int j = 1; j < a.points.length; j++){
+      Point from = a.points[j - 1];
+      Point to = a.points[j];
+      angle = atan2(to.y - from.y, to.x - from.x);
+      double x = headlen * 0.9 * cos(angle);
+      double y = headlen * 0.9 * sin(angle);
+      g.moveTo(from.x, from.y);
+      int i = 0;
+      while(from.distanceTo(to) > headlen){
+        from = new Point(from.x + x, from.y + y);
+        if(i % 2 == 0){
+          g.lineTo(from.x, from.y);
+        } else {
+          g.moveTo(from.x, from.y);
+        }
+        i++;
+      }
+      if(i % 2 == 0){
+        g.lineTo(to.x, to.y);
+      } else {
+        g.moveTo(to.x, to.y);
+      }
     }
+    
+    Point to = a.points[a.points.length - 1];
+    g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
+    g.moveTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
   }
 
   void drawInheritance(CanvasRenderingContext2D g, Arrow a){
