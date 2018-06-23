@@ -1,13 +1,14 @@
 import 'DiagramObject.dart';
 import 'Association.dart';
+import 'Arrow.dart';
 
 enum ClassType {CLASS, INTERFACE, ENUM}
 
 class Class extends DiagramObject{
   ClassType type;
-  List<Class> inheritances;
-  List<Class> dependencies;
-  List<Class> realizations;
+  List<Arrow> inheritances;
+  List<Arrow> dependencies;
+  List<Arrow> realizations;
   List<Association> associations;
   List<Association> dAssociations;
   List<Association> aggregations;
@@ -16,9 +17,9 @@ class Class extends DiagramObject{
   List<String> members;
 
   Class(){
-    inheritances = new List<Class>();
-    dependencies = new List<Class>();
-    realizations = new List<Class>();
+    inheritances = new List<Arrow>();
+    dependencies = new List<Arrow>();
+    realizations = new List<Arrow>();
     associations = new List<Association>();
     dAssociations = new List<Association>();
     aggregations = new List<Association>();

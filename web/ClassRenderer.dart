@@ -2,6 +2,8 @@ import 'dart:html';
 import 'DiagramObject.dart';
 import 'Class.dart';
 import 'Package.dart';
+import 'Arrow.dart';
+import 'Association.dart';
 
 class ClassRenderer {
 
@@ -15,6 +17,62 @@ class ClassRenderer {
     g.font = (8 * scale).toString() + "px Arial";
 
     g.beginPath();
+
+    // Draw Arrows
+    for(int i = 0; i < objects.length; i++){
+      if(objects[i] is Class){
+        Class s = objects[i];
+        for(int j = 0; j < s.inheritances.length; j++){
+          Arrow arrow = s.inheritances[j];
+          if(arrow.points.length < 3){
+            setArrowPoints(arrow);
+          }
+          drawInheritance(g, arrow);
+        }
+        for(int j = 0; j < s.dependencies.length; j++){
+          Arrow arrow = s.dependencies[j];
+          if(arrow.points.length < 3){
+            setArrowPoints(arrow);
+          }
+          drawDependancy(g, arrow);
+        }
+        for(int j = 0; j < s.realizations.length; j++){
+          Arrow arrow = s.realizations[j];
+          if(arrow.points.length < 3){
+            setArrowPoints(arrow);
+          }
+          drawRealization(g, arrow);
+        }
+        for(int j = 0; j < s.associations.length; j++){
+          Association a = s.associations[j];
+          if(a.points.length < 3){
+            setArrowPoints(a);
+          }
+          drawAssociation(g, a);
+        }
+        for(int j = 0; j < s.dAssociations.length; j++){
+          Association a = s.dAssociations[j];
+          if(a.points.length < 3){
+            setArrowPoints(a);
+          }
+          drawDAssociation(g, a);
+        }
+        for(int j = 0; j < s.aggregations.length; j++){
+          Association a = s.aggregations[j];
+          if(a.points.length < 3){
+            setArrowPoints(a);
+          }
+          drawAggregation(g, a);
+        }
+        for(int j = 0; j < s.compositions.length; j++){
+          Association a = s.compositions[j];
+          if(a.points.length < 3){
+            setArrowPoints(a);
+          }
+          drawComposition(g, a);
+        }
+      }   
+    }
 
     // Draw objects
     for(int i = 0; i < objects.length; i++){
@@ -35,6 +93,61 @@ class ClassRenderer {
     }
 
     g.stroke();
+  }
+
+  void drawComposition(CanvasRenderingContext2D g, Association a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void drawAggregation(CanvasRenderingContext2D g, Association a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void drawDAssociation(CanvasRenderingContext2D g, Association a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void drawAssociation(CanvasRenderingContext2D g, Association a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void drawRealization(CanvasRenderingContext2D g, Arrow a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void drawDependancy(CanvasRenderingContext2D g, Arrow a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void drawInheritance(CanvasRenderingContext2D g, Arrow a){
+    g.moveTo(a.points[0].x, a.points[0].y);
+    for(int i = 1; i < a.points.length; i++){
+      g.lineTo(a.points[i].x, a.points[i].y);
+    }
+  }
+
+  void setArrowPoints(Arrow a){
+    a.points.clear();
+    a.points.add(new Point(a.from.x + a.from.width / 2, a.from.y + a.from.height / 2));
+    a.points.add(new Point(a.to.x + a.to.width / 2, a.to.y + a.to.height / 2));
   }
 
   void drawPackage(CanvasRenderingContext2D g, Package p){

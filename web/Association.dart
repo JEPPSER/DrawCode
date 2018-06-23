@@ -1,7 +1,6 @@
-import 'Class.dart';
+import 'Arrow.dart';
 
-class Association {
-  Class object;
-  String from;
-  String to;
+class Association extends Arrow{
+  String fromText;
+  String toText;
 }

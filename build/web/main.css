@@ -73,7 +73,7 @@ body {
     height: 100%;
     min-height: 900px;
     resize: none;
-    font-family: "Lucida Console";
+    font-family: "Consolas";
     font-size: 18px;
     background: url(https://i.imgur.com/Lx08nGL.png);
     background-attachment: local;

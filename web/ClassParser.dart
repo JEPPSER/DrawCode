@@ -2,6 +2,7 @@ import 'DiagramObject.dart';
 import 'Class.dart';
 import 'Association.dart';
 import 'Package.dart';
+import 'Arrow.dart';
 
 class ClassParser {
 
@@ -21,10 +22,10 @@ class ClassParser {
         add(list, lines[i], i);
       } else if(lines[i].contains("-->")){
         dependency(list, lines[i], i);
-      } else if(lines[i].contains("-|>")){
-        inheritance(list, lines[i], i);
       } else if(lines[i].contains("--|>")){
         realization(list, lines[i], i);
+      } else if(lines[i].contains("-|>")){
+        inheritance(list, lines[i], i);
       } else if(lines[i].contains(")-(")){
         association(list, lines[i], i);
       } else if(lines[i].contains(")->(")){
@@ -88,9 +89,10 @@ class ClassParser {
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
         Association ass = new Association();
-        ass.from = from;
-        ass.to = to;
-        ass.object = list[b];
+        ass.fromText = from;
+        ass.toText = to;
+        ass.to = list[b];
+        ass.from = c;
         c.compositions.add(ass);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
@@ -117,9 +119,10 @@ class ClassParser {
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
         Association ass = new Association();
-        ass.from = from;
-        ass.to = to;
-        ass.object = list[b];
+        ass.fromText = from;
+        ass.toText = to;
+        ass.to = list[b];
+        ass.from = c;
         c.aggregations.add(ass);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
@@ -146,9 +149,10 @@ class ClassParser {
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
         Association ass = new Association();
-        ass.from = from;
-        ass.to = to;
-        ass.object = list[b];
+        ass.fromText = from;
+        ass.toText = to;
+        ass.to = list[b];
+        ass.from = c;
         c.dAssociations.add(ass);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
@@ -175,9 +179,10 @@ class ClassParser {
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
         Association ass = new Association();
-        ass.from = from;
-        ass.to = to;
-        ass.object = list[b];
+        ass.fromText = from;
+        ass.toText = to;
+        ass.to = list[b];
+        ass.from = c;
         c.associations.add(ass);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
@@ -201,7 +206,10 @@ class ClassParser {
     if(a != -1 && b != -1){
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
-        c.realizations.add(list[b]);
+        Arrow arrow = new Arrow();
+        arrow.from = c;
+        arrow.to = list[b];
+        c.realizations.add(arrow);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
       }
@@ -224,7 +232,10 @@ class ClassParser {
     if(a != -1 && b != -1){
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
-        c.inheritances.add(list[b]);
+        Arrow arrow = new Arrow();
+        arrow.from = c;
+        arrow.to = list[b];
+        c.inheritances.add(arrow);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
       }
@@ -247,7 +258,10 @@ class ClassParser {
     if(a != -1 && b != -1){
       if(list[a] is Class && list[b] is Class){
         Class c = list[a];
-        c.dependencies.add(list[b]);
+        Arrow arrow = new Arrow();
+        arrow.from = c;
+        arrow.to = list[b];
+        c.dependencies.add(arrow);
       } else {
         print("ERROR: invalid variable type\nline: $lineNumber");
       }
