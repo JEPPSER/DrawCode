@@ -96,6 +96,35 @@ class ClassRenderer {
     g.stroke();
   }
 
+  Point getRectangleEdge(Rectangle r, double angle){
+    double topRight = atan((r.height / 2) / (r.width / 2));
+    if(topRight < 0){
+      topRight += 2 * PI;
+    }
+    double topLeft = PI - topRight;
+    double bottomRight = -1 * topRight + 2 * PI;
+    double bottomLeft = -1 * topLeft + 2 * PI;
+    double x;
+    double y;
+    if(angle < 0){
+      angle += 2*PI;
+    }
+    if(angle >= bottomRight || angle <= topRight ){
+      x = r.width / 2;
+      y = tan(angle) * x;
+    } else if(angle >= topRight && angle <= topLeft){
+      y = r.height / 2;
+      x = y / tan(angle);
+    } else if(angle >= topLeft && angle <= bottomLeft){
+      x = -r.width / 2;
+      y = tan(angle) * x;
+    } else if(angle >= bottomLeft && angle <= bottomRight){
+      y = -r.height / 2;
+      x = y / tan(angle);
+    }
+    return new Point(r.left + r.width / 2 + x, r.top + r.height / 2 + y);
+  }
+
   void drawComposition(CanvasRenderingContext2D g, Association a){
     int headlen = 15;
     Point from = a.points[0];
@@ -263,8 +292,16 @@ class ClassRenderer {
 
   void setArrowPoints(Arrow a){
     a.points.clear();
-    a.points.add(new Point(a.from.x + a.from.width / 2, a.from.y + a.from.height / 2));
-    a.points.add(new Point(a.to.x + a.to.width / 2, a.to.y + a.to.height / 2));
+    Rectangle r1 = new Rectangle(a.from.x, a.from.y, a.from.width, a.from.height);
+    double fromX = a.from.x + a.from.width / 2;
+    double fromY = a.from.y + a.from.height / 2;
+    double toX = a.to.x + a.to.width / 2;
+    double toY = a.to.y + a.to.height / 2;
+    double angle = atan2(toY - fromY, toX - fromX);
+    a.points.add(getRectangleEdge(r1, angle));
+    Rectangle r2 = new Rectangle(a.to.x, a.to.y, a.to.width, a.to.height);
+    angle = atan2(fromY - toY, fromX - toX);
+    a.points.add(getRectangleEdge(r2, angle));
   }
 
   void drawPackage(CanvasRenderingContext2D g, Package p){
