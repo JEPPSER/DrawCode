@@ -130,6 +130,7 @@ class ClassRenderer {
     Point from = a.points[0];
     Point to = a.points[1];
     double angle = atan2(to.y - from.y, to.x - from.x);
+    g.stroke();
     g.beginPath();
     g.moveTo(from.x, from.y);
     to = new Point(from.x + headlen*cos(angle-PI/6), from.y + headlen*sin(angle-PI/6));
@@ -144,6 +145,8 @@ class ClassRenderer {
     g.closePath();
     g.fillStyle = "#000000";
     g.fill();
+    g.beginPath();
+    g.moveTo(to.x, to.y);
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
