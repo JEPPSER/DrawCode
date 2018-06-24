@@ -97,24 +97,61 @@ class ClassRenderer {
   }
 
   void drawComposition(CanvasRenderingContext2D g, Association a){
-    g.moveTo(a.points[0].x, a.points[0].y);
+    int headlen = 15;
+    Point from = a.points[0];
+    Point to = a.points[1];
+    double angle = atan2(to.y - from.y, to.x - from.x);
+    g.beginPath();
+    g.moveTo(from.x, from.y);
+    to = new Point(from.x + headlen*cos(angle-PI/6), from.y + headlen*sin(angle-PI/6));
+    g.lineTo(to.x, to.y);
+    to = new Point(to.x + headlen*cos(angle-11*PI/6), to.y + headlen*sin(angle-11*PI/6));
+    g.lineTo(to.x, to.y);
+    g.moveTo(from.x, from.y);
+    to = new Point(from.x + headlen*cos(angle-11*PI/6), from.y + headlen*sin(angle-11*PI/6));
+    g.lineTo(to.x, to.y);
+    to = new Point(to.x + headlen*cos(angle-PI/6), to.y + headlen*sin(angle-PI/6));
+    g.lineTo(to.x, to.y);
+    g.closePath();
+    g.fillStyle = "#000000";
+    g.fill();
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
   }
 
   void drawAggregation(CanvasRenderingContext2D g, Association a){
-    g.moveTo(a.points[0].x, a.points[0].y);
+    int headlen = 15;
+    Point from = a.points[0];
+    Point to = a.points[1];
+    double angle = atan2(to.y - from.y, to.x - from.x);
+    g.moveTo(from.x, from.y);
+    to = new Point(from.x + headlen*cos(angle-PI/6), from.y + headlen*sin(angle-PI/6));
+    g.lineTo(to.x, to.y);
+    to = new Point(to.x + headlen*cos(angle-11*PI/6), to.y + headlen*sin(angle-11*PI/6));
+    g.lineTo(to.x, to.y);
+    g.moveTo(from.x, from.y);
+    to = new Point(from.x + headlen*cos(angle-11*PI/6), from.y + headlen*sin(angle-11*PI/6));
+    g.lineTo(to.x, to.y);
+    to = new Point(to.x + headlen*cos(angle-PI/6), to.y + headlen*sin(angle-PI/6));
+    g.lineTo(to.x, to.y);
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
   }
 
   void drawDAssociation(CanvasRenderingContext2D g, Association a){
+    int headlen = 15;
     g.moveTo(a.points[0].x, a.points[0].y);
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
+    Point to = a.points[a.points.length - 1];
+    Point from = a.points[a.points.length - 2];
+    double angle = atan2(to.y - from.y, to.x - from.x);
+    g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
+    g.moveTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
   }
 
   void drawAssociation(CanvasRenderingContext2D g, Association a){
@@ -201,10 +238,27 @@ class ClassRenderer {
   }
 
   void drawInheritance(CanvasRenderingContext2D g, Arrow a){
+    int headlen = 15;
+    double angle;
+    int x;
+    int y;
     g.moveTo(a.points[0].x, a.points[0].y);
     for(int i = 1; i < a.points.length; i++){
-      g.lineTo(a.points[i].x, a.points[i].y);
+      Point to = a.points[i];
+      Point from = a.points[i - 1];
+      if(i == a.points.length - 1){
+        angle = atan2(to.y - from.y, to.x - from.x);
+        x = (headlen * 0.9 * cos(angle)).floor();
+        y = (headlen * 0.9 * sin(angle)).floor();
+        to = new Point(to.x - x, to.y - y);
+      }
+      g.lineTo(to.x, to.y);
     }
+    Point to = a.points[a.points.length - 1];
+    g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
+    g.lineTo(to.x, to.y);
+    g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
+    g.lineTo(to.x - x, to.y - y);
   }
 
   void setArrowPoints(Arrow a){
