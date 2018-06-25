@@ -125,6 +125,22 @@ class ClassRenderer {
     return new Point(r.left + r.width / 2 + x, r.top + r.height / 2 + y);
   }
 
+  void drawAssociationText(CanvasRenderingContext2D g, Association a){
+    int length = 20;
+    Point from = a.points[0];
+    Point to = a.points[1];
+    double angle = atan2(to.y - from.y, to.x - from.x) + PI / 4;
+    double x = cos(angle) * length - a.fromText.length * scale * 2;
+    double y = sin(angle) * length + 5;
+    g.fillText(a.fromText, from.x + x, from.y + y); 
+    from = a.points[a.points.length - 2];
+    to = a.points[a.points.length - 1];
+    angle = atan2(to.y - from.y, to.x - from.x) - PI / 4;
+    x = cos(angle) * length + a.toText.length * scale * 2;
+    y = sin(angle) * length - 5;
+    g.fillText(a.toText, to.x - x, to.y - y);
+  }
+
   void drawComposition(CanvasRenderingContext2D g, Association a){
     int headlen = 15;
     Point from = a.points[0];
@@ -150,6 +166,7 @@ class ClassRenderer {
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
+    drawAssociationText(g, a);
   }
 
   void drawAggregation(CanvasRenderingContext2D g, Association a){
@@ -170,6 +187,7 @@ class ClassRenderer {
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
+    drawAssociationText(g, a);
   }
 
   void drawDAssociation(CanvasRenderingContext2D g, Association a){
@@ -184,6 +202,7 @@ class ClassRenderer {
     g.lineTo(to.x-headlen*cos(angle-PI/6), to.y-headlen*sin(angle-PI/6));
     g.moveTo(to.x, to.y);
     g.lineTo(to.x-headlen*cos(angle+PI/6), to.y-headlen*sin(angle+PI/6));
+    drawAssociationText(g, a);
   }
 
   void drawAssociation(CanvasRenderingContext2D g, Association a){
@@ -191,6 +210,7 @@ class ClassRenderer {
     for(int i = 1; i < a.points.length; i++){
       g.lineTo(a.points[i].x, a.points[i].y);
     }
+    drawAssociationText(g, a);
   }
 
   void drawRealization(CanvasRenderingContext2D g, Arrow a){
