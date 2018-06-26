@@ -38,10 +38,17 @@ main(){
   var flowchartEx = querySelector('#flowchartEx');
   var usecaseEx = querySelector('#usecaseEx');
   var dfaEx = querySelector('#dfaEx');
+  var classEx = querySelector('#classEx');
 
   List<DiagramObject> objects;
   List<StreamSubscription> subs = new List<StreamSubscription>();
   ExampleLoader exLoader = new ExampleLoader();
+
+  classEx.onClick.listen((_) {
+    String str = exLoader.getClassExample();
+    context.callMethod('setText', [str]);
+    drawBtn.click();
+  });
 
   dfaEx.onClick.listen((_) {
     String str = exLoader.getDFAExample();
