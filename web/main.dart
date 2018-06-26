@@ -19,6 +19,7 @@ import 'Square.dart';
 import 'State.dart';
 import 'ClassDiagram.dart';
 import 'ClassParser.dart';
+import 'ClassController.dart';
 import 'dart:async';
 import 'dart:js';
 
@@ -100,6 +101,9 @@ main(){
       objects = parser.parse(str);
       ClassDiagram cd = new ClassDiagram();
       cd.render(g, objects);
+      ClassController c = new ClassController(myCanvas, g, objects);
+      c.listen();
+      subs = c.getSubscriptions();
     }
   });
 
