@@ -129,14 +129,30 @@ class ClassRenderer {
     int length = 20;
     Point from = a.points[0];
     Point to = a.points[1];
-    double angle = atan2(to.y - from.y, to.x - from.x) + PI / 4;
-    double x = cos(angle) * length - a.fromText.length * scale * 2;
+    double angle = atan2(to.y - from.y, to.x - from.x);
+    if(angle < 0){
+      angle += PI * 2;
+    }
+    if(angle <= PI){
+      angle -= PI / 4;
+    } else {
+      angle += PI / 4;
+    }
+    double x = cos(angle) * length;
     double y = sin(angle) * length + 5;
     g.fillText(a.fromText, from.x + x, from.y + y); 
     from = a.points[a.points.length - 2];
     to = a.points[a.points.length - 1];
-    angle = atan2(to.y - from.y, to.x - from.x) - PI / 4;
-    x = cos(angle) * length + a.toText.length * scale * 2;
+    angle = atan2(to.y - from.y, to.x - from.x);
+    if(angle < 0){
+      angle += PI * 2;
+    }
+    if(angle <= PI){
+      angle += PI / 4;
+    } else {
+      angle -= PI / 4;
+    }
+    x = cos(angle) * length;
     y = sin(angle) * length - 5;
     g.fillText(a.toText, to.x - x, to.y - y);
   }
