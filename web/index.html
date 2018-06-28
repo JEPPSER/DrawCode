@@ -27,6 +27,7 @@
                     <button class="tablinks" onclick="openTab(event, 'Flowchart')">Flowchart</button>
                     <button class="tablinks" onclick="openTab(event, 'Usecase')">Use Case Diagram</button>
                     <button class="tablinks" onclick="openTab(event, 'DFA')">DFA</button>
+                    <button class="tablinks" onclick="openTab(event, 'Class')">Class Diagram</button>
                 </div>
                 <div id="Flowchart" class="tabcontent">
                     <h3>Specify the type of diagram</h3>
@@ -192,6 +193,59 @@
                     <br>
                     To test changing object placement, simply load the "DFA" example from the menu bar and try
                     changing the appearance of the diagram in as many ways as you can.</p>
+                </div>
+                <div id="Class" class="tabcontent">
+                    <h3>Specify the type of diagram</h3>
+                    <p>The type of diagram you want to make has to be specified at the very first line.
+                    To specify that you want to make a class diagram, write &#60class&#62 in the first line.
+                    Load the "Class Diagram" example from the menu bar for reference.</p>
+                    <h3>Add a class to the diagram</h3>
+                    <p>There are 3 different types of classes you can include in your class diagram: 
+                    Class, Enum and Interface. To add a class to the diagram, type the name of the type of class
+                    followed by a space and a variable name. The variable name will be considered to be the class
+                    name and will be displayed at the top of the class.<br>
+                    <br>
+                    Example:<br>
+                    Class Car<br>
+                    Enum FuelType<br>
+                    Interface Vehicle<br>
+                    <br>
+                    (note: Each command must be separated by a new line)</p>
+                    <h3>Add a package to the diagram</h3>
+                    <p>Adding a package works similarly to adding a class. You type "Package" followed by a space
+                    and a variable name. The name of the package is the name of the variable unless you manually set
+                    the text. This is done by typing the variable name followed by .text="your package name".
+                    To add classes to the package, type the package name followed by " add " and the variable name
+                    of the class you want to add.<br>
+                    <br>
+                    Example:<br>
+                    Package package<br>
+                    package.text="vehicle"<br>
+                    package add Car<br>
+                    package add FuelType</p>
+                    <h3>Add dependency</h3>
+                    <p>Vehicle-->Car</p>
+                    <h3>Add realization</h3>
+                    <p>Vehicle--|>Car</p>
+                    <h3>Add inheritance (generalization)</h3>
+                    <p>Vehicle-|>Car</p>
+                    <h3>Add association</h3>
+                    <p>Vehicle(0..*)-(1)Car</p>
+                    <h3>Add direct association</h3>
+                    <p>Vehicle(1)->(1)Car</p>
+                    <h3>Add aggregation</h3>
+                    <p>Vehicle(1..*)&#60&#62-(1)Car</p>
+                    <h3>Add Composition</h3>
+                    <p>Vehicle(1)&#60#&#62-(1..*)Car</p>
+                    <h3>Object placement</h3>
+                    <p>When clicking the "Draw" button, an algorithm will place the classes in the diagram
+                    as well as it can. You will probably want to change the placements on your own. This is simply done by dragging and dropping
+                    classes with the cursor. You can also change the appearance of the arrows by clicking them and creating
+                    new points. The arrow will then be drawn from point to point and create a path. These points can also be
+                    moved by dragging and dropping. To delete a point, simply right click on it.<br>
+                    <br>
+                    To test changing class placements, simply load the "Class Diagram" example from
+                    the menu bar and try changing the appearance of the class diagram in as many ways as you can.</p>
                 </div>
             </div>
         </div> 

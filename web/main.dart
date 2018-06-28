@@ -17,9 +17,11 @@ import 'If.dart';
 import 'Arrow.dart';
 import 'Square.dart';
 import 'State.dart';
+import 'Class.dart';
 import 'ClassDiagram.dart';
 import 'ClassParser.dart';
 import 'ClassController.dart';
+import 'ClassRenderer.dart';
 import 'dart:async';
 import 'dart:js';
 
@@ -173,6 +175,9 @@ void drawCanvas(String str, CanvasRenderingContext2D g, List<DiagramObject> obje
   } else if(str.startsWith("<dfa>")){
     DFARenderer renderer = new DFARenderer();
     renderer.render(g, objects);
+  } else if(str.startsWith("<class>")){
+    ClassRenderer renderer = new ClassRenderer();
+    renderer.render(g, objects);
   }
 }
 
@@ -240,9 +245,30 @@ void cropCanvas(CanvasElement myCanvas, List<DiagramObject> objects){
           a.points[k] = new Point(a.points[k].x - x, a.points[k].y - y);
         }
       }
+    } else if(objects[i] is Class){
+      Class s = objects[i];
+      List<Arrow> connections = getConnections(s);
+      for(int j = 0; j < connections.length; j++){
+        Arrow a = connections[j];
+        for(int k = 0; k < a.points.length; k++){
+          a.points[k] = new Point(a.points[k].x - x, a.points[k].y - y);
+        }
+      }
     }
   }
 
   myCanvas.width = width;
   myCanvas.height = height;
+}
+
+List<Arrow> getConnections(Class s){
+    List<Arrow> list = new List<Arrow>();
+    list.addAll(s.aggregations);
+    list.addAll(s.associations);
+    list.addAll(s.compositions);
+    list.addAll(s.dAssociations);
+    list.addAll(s.dependencies);
+    list.addAll(s.inheritances);
+    list.addAll(s.realizations);
+    return list;
 }
