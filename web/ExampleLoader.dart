@@ -13,6 +13,6 @@ class ExampleLoader {
   }
 
   String getClassExample(){
-    return "<class>\nClass class\nclass add hej\nclass add då\nclass add hejdå()\nclass add okej()\nInterface int\nint add yo\nint add hello\nint add yohello()\nint add funka()\nint add yeeee()\nEnum enum\nenum add japp\nenum add detta\nenum add funkar\nPackage package\npackage add int\npackage add enum\npackage add class\npackage.text=\"rapidtunes\"\nenum-->int\nclass-|>enum\nclass(1)<#>-(1)int";
+    return "<class>\nClass Bank\nBank add +code\nBank add +address\nBank add +manages()\nBank add +maintains()\nInterface Account\nAccount add +number\nAccount add +balance\nAccount add +deposit()\nAccount add +withdraw()\nAccount add createTransaction()\nEnum AccountType\nAccountType add customer\nAccountType add clerk\nAccountType add executive\nPackage package\npackage add Bank\npackage add Account\npackage add AccountType\npackage.text=\"bank pkg\"\nBank(1)<>-(0..*)Account\nAccount(1)->(1)AccountType\nAccountType-->Bank";
   }
 }
