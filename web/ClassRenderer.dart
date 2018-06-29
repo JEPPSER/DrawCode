@@ -140,6 +140,9 @@ class ClassRenderer {
     }
     double x = cos(angle) * length;
     double y = sin(angle) * length + 5;
+    if(angle >= PI / 2 && angle <= 3 * PI / 2){
+      x -= 20;
+    }
     g.fillText(a.fromText, from.x + x, from.y + y); 
     from = a.points[a.points.length - 2];
     to = a.points[a.points.length - 1];
@@ -154,6 +157,9 @@ class ClassRenderer {
     }
     x = cos(angle) * length;
     y = sin(angle) * length - 5;
+    if(angle <= PI / 2 || angle >= 3 * PI / 2){
+      x += 20;
+    }
     g.fillText(a.toText, to.x - x, to.y - y);
   }
 
