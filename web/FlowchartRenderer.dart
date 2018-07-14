@@ -16,7 +16,7 @@ class FlowchartRenderer {
       scale = 1.4;
     }
 
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
 
     // Draw lines (arrows)
     g.beginPath();
@@ -304,7 +304,7 @@ class FlowchartRenderer {
       }
       for(int i = 0; i < lines.length; i++){
         int y = (s.y + s.height * 0.55 + i * s.height / 8 - (lines.length - 1) * s.height / 16).floor();
-        int x = ((s.x + s.width / 2) - lines[i].length * scale * 1.9).floor();
+        int x = ((s.x + s.width / 2) - lines[i].length * scale * 2.4).floor();
         g.fillText(lines[i], x, y);
       }
     } else if(o is If){
@@ -336,7 +336,7 @@ class FlowchartRenderer {
       }
       for(int i = 0; i < lines.length; i++){
         int y = (s.y + s.height * 0.55 + i * s.height / 8 - (lines.length - 1) * s.height / 16).floor();
-        int x = ((s.x + s.width / 2) - lines[i].length * scale * 1.9).floor();
+        int x = ((s.x + s.width / 2) - lines[i].length * scale * 2.4).floor();
         g.fillText(lines[i], x, y);
       }
     }

@@ -15,7 +15,7 @@ class ClassRenderer {
     if(scale < 1.2){
       scale = 1.2;
     }
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
 
     g.beginPath();
 
@@ -358,9 +358,9 @@ class ClassRenderer {
     } else {
       text = p.text;
     }
-    g.lineTo(p.x + text.length * scale * 4, p.y + scale * 12);
-    g.lineTo(p.x + text.length * scale * 4 + scale * 5, p.y + scale * 6);
-    g.lineTo(p.x + text.length * scale * 4 + scale * 5, p.y);
+    g.lineTo(p.x + text.length * scale * 5, p.y + scale * 12);
+    g.lineTo(p.x + text.length * scale * 5 + scale * 6, p.y + scale * 6);
+    g.lineTo(p.x + text.length * scale * 5 + scale * 6, p.y);
     g.fillText(text, p.x + scale * 2, p.y + scale * 8);
   }
 
@@ -395,12 +395,12 @@ class ClassRenderer {
     g.strokeRect(s.x, s.y, s.width, s.height);
     g.moveTo(s.x, s.y + scale * 10 * 2);
     g.lineTo(s.x + s.width, s.y + scale * 10 * 2);
-    int textX1 = ((s.x + s.width / 2) - 15 * scale * 2.1).floor();
+    int textX1 = ((s.x + s.width / 2) - 15 * scale * 2.4).floor();
     int textX2 = ((s.x + s.width / 2) - s.name.length * scale * 2.4).floor();
     g.fillText("<<enumeration>>", textX1, s.y + scale * 8);
-    g.font = "bold " + (8 * scale).toString() + "px Arial";
+    g.font = "bold " + (8 * scale).toString() + "px Lucida Console";
     g.fillText(s.name, textX2, s.y + scale * 8 * 2);
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
     for(int i = 0; i < s.members.length; i++){
       double x = s.x + scale * 2;
       double y = s.y + scale * 10 * (i + 3) - scale * 2;
@@ -412,12 +412,12 @@ class ClassRenderer {
     g.strokeRect(s.x, s.y, s.width, s.height);
     g.moveTo(s.x, s.y + scale * 10 * 2);
     g.lineTo(s.x + s.width, s.y + scale * 10 * 2);
-    int textX1 = ((s.x + s.width / 2) - 13 * scale * 1.9).floor();
+    int textX1 = ((s.x + s.width / 2) - 13 * scale * 2.4).floor();
     int textX2 = ((s.x + s.width / 2) - s.name.length * scale * 2.4).floor();
     g.fillText("<<interface>>", textX1, s.y + scale * 8);
-    g.font = "bold " + (8 * scale).toString() + "px Arial";
+    g.font = "bold " + (8 * scale).toString() + "px Lucida Console";
     g.fillText(s.name, textX2, s.y + scale * 8 * 2);
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
     List<String> field = new List<String>();
     List<String> methods = new List<String>();
     for(int j = 0; j < s.members.length; j++){
@@ -456,10 +456,10 @@ class ClassRenderer {
         field.add(s.members[j]);
       }
     }
-    g.font = "bold " + (8 * scale).toString() + "px Arial";
+    g.font = "bold " + (8 * scale).toString() + "px Lucida Console";
     int textX = ((s.x + s.width / 2) - s.name.length * scale * 2.4).floor();
     g.fillText(s.name, textX, s.y + scale * 8);
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
     int j;
     for(j = 0; j < field.length; j++){
       double x = s.x + scale * 2;

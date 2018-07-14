@@ -12,7 +12,7 @@ class UseCaseRenderer {
     if(scale < 1.2){
       scale = 1.2;
     }
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
 
     g.beginPath();
 
@@ -51,7 +51,7 @@ class UseCaseRenderer {
           drawDottedArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
           int x = points[0].x + (points[1].x - points[0].x) / 2;
           int y = points[0].y + (points[1].y - points[0].y) / 2 - 5;
-          x = (x - 10 * scale * 1.9).floor();
+          x = (x - 10 * scale * 2.4).floor();
           g.fillText("<<extend>>", x, y);
         }
         for(int j = 0; j < uc.inclusions.length; j++){
@@ -59,7 +59,7 @@ class UseCaseRenderer {
           drawDottedArrow(g, points[0].x, points[0].y, points[1].x, points[1].y);
           int x = points[0].x + (points[1].x - points[0].x) / 2;
           int y = points[0].y + (points[1].y - points[0].y) / 2 - 5;
-          x = (x - 11 * scale * 1.9).floor();
+          x = (x - 11 * scale * 2.4).floor();
           g.fillText("<<include>>", x, y);
         }
       }
@@ -73,7 +73,7 @@ class UseCaseRenderer {
           actor.text = " ";
         }
         drawActor(g, actor);
-        int x = ((actor.x + actor.width / 2) - actor.text.length * scale * 1.9).floor();
+        int x = ((actor.x + actor.width / 2) - actor.text.length * scale * 2.4).floor();
         g.fillText(actor.text, x, actor.y + actor.height);
       } else if(objects[i] is UseCase){
         UseCase uc = objects[i];
@@ -89,7 +89,7 @@ class UseCaseRenderer {
           sys.text = " ";
         }
         g.rect(sys.x, sys.y, sys.width, sys.height);
-        int x = ((sys.x + sys.width / 2) - sys.text.length * scale * 1.9).floor();
+        int x = ((sys.x + sys.width / 2) - sys.text.length * scale * 2.4).floor();
         g.fillText(sys.text, x, sys.y + 20);
       }
     }
@@ -232,7 +232,7 @@ class UseCaseRenderer {
     }
     for(int i = 0; i < lines.length; i++){
       int y = (uc.y + uc.height * 0.55 + i * uc.height / 8 - (lines.length - 1) * uc.height / 16).floor();
-      int x = ((uc.x + uc.width / 2) - lines[i].length * scale * 1.9).floor();
+      int x = ((uc.x + uc.width / 2) - lines[i].length * scale * 2.4).floor();
       g.fillText(lines[i], x, y);
     }
   }

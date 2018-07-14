@@ -12,14 +12,14 @@ class DFARenderer {
       scale = 1.4;
     }
 
-    g.font = (12 * scale).toString() + "px Arial";
+    g.font = (12 * scale).toString() + "px Lucida Console";
 
     // Draw objects
     for(int i = 0; i < objects.length; i++){
       State s = objects[i];
       drawArrows(g, s, scale);
       drawState(g, s);
-      int x = ((s.x + s.width / 2) - s.name.length * scale * 2.2).floor();
+      int x = ((s.x + s.width / 2) - s.name.length * scale * 2.4).floor();
       int y = (s.y + s.height / 2 + scale * 3).floor();
       g.fillText(s.name, x, y);
     }

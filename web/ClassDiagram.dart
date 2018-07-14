@@ -19,7 +19,7 @@ class ClassDiagram {
     if(scale < 1.2){
       scale = 1.2;
     }
-    g.font = (8 * scale).toString() + "px Arial";
+    g.font = (8 * scale).toString() + "px Lucida Console";
 
     // Set size of all objects.
     for(int i = 0; i < objects.length; i++){
